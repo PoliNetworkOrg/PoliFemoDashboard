@@ -1,0 +1,26 @@
+@import "./base.css";
+
+.navbar-title {
+  display: unset !important;
+  text-decoration: none;
+}
+
+.min-vh-80 {
+  min-height: 80vh;
+}
+
+.toast-body {
+  color: white;
+}
+
+.bar-section {
+  cursor: pointer;
+}
+
+.btn {
+  border-radius: 0 !important;
+}
+
+.btn-list-item-action {
+  width: 40px;
+}
