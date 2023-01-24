@@ -26,7 +26,7 @@ export default {
       var code = window.location.search.split("code=")[1].split("&")[0];
       var state = window.location.search.split("state=")[1].split("&")[0];
       axios
-        .get(API_BASE_URL + "/v1/auth/code?code=" + code + "&state=" + state)
+        .get(API_BASE_URL + "/auth/code?code=" + code + "&state=" + state)
         .then(function (response) {
           loggers.mainLogger.info("Auth", "Credentials added to storage");
           localStorage.setItem(
@@ -51,7 +51,7 @@ export default {
   methods: {
     startLogin() {
       window.open(
-        "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize?client_id=92602f24-dd8e-448e-a378-b1c575310f9d&scope=openid offline_access&response_type=code&login_hint=nome.cognome@mail.polimi.it&state=10020&redirect_uri=https://polifemodash.polinetwork.org/",
+        "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize?client_id=92602f24-dd8e-448e-a378-b1c575310f9d&scope=openid offline_access&response_type=code&login_hint=nome.cognome@mail.polimi.it&state=10020&redirect_uri=https://dashboard.polinetwork.org",
         "_self"
       );
     },

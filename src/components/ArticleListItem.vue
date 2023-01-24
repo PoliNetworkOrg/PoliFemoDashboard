@@ -109,7 +109,7 @@ export default {
           '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 
         axios
-          .delete(API_BASE_URL + "/v1/articles/" + this.id, {
+          .delete(API_BASE_URL + "/articles/" + this.id, {
             headers: {
               "Content-Type": "application/json",
               Authorization:

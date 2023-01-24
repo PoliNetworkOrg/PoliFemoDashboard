@@ -125,6 +125,7 @@ export default {
         },
         (error) => {
           showToast("Errore durante il recupero dei permessi", "error");
+          this.$router.push("/");
         }
       );
     } else if (window.location.search.indexOf("code=") == -1) {

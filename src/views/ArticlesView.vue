@@ -265,6 +265,7 @@ export default {
     return {
       articles: [],
       canLoadMore: true,
+      deletedPageOffset: 0,
     };
   },
   mounted() {
@@ -339,7 +340,7 @@ export default {
 
     //Fetch categories and fill the select
     axios
-      .get(API_BASE_URL + "/v1/tags")
+      .get(API_BASE_URL + "/tags")
       .then((response) => {
         response.data.tags.forEach((cat) => {
           var catname =
@@ -390,7 +391,7 @@ export default {
             var data = {
               content: body,
               title: $("#titoloArticolo").val(),
-              author_id: $("#selectmittente").val(),
+              author_id: parseInt($("#selectmittente").val()),
               tag_id: $("#selectcategoria").val(),
             };
 
@@ -398,7 +399,7 @@ export default {
             var subtitle = $("#sottotitoloArticolo").val();
 
             if (datetime != null) {
-              data["target_time"] = datetime.picked;
+              data["target_time"] = datetime.picked[0];
             }
 
             if (subtitle != "") {
@@ -415,7 +416,7 @@ export default {
             }
 
             axios
-              .post(API_BASE_URL + "/v1/articles", data, {
+              .post(API_BASE_URL + "/articles", data, {
                 headers: {
                   "Content-Type": "application/json",
                   Authorization:
@@ -507,36 +508,35 @@ export default {
   },
 
   methods: {
-    getArticlesFromAuthor(dateoffset) {
+    getArticlesFromAuthor(more) {
       var id = $("#selectMittenteDel").val();
       var titolo = $("#titoloArticoloDel").val();
       // The empty author is selected
       if (id == 0) {
         return;
       }
-      $("#loading").removeClass("d-none");
-      var path = "/v1/articles?author_id=" + id + "&limit=3";
-      if (titolo != "") {
-        path += "&title=" + titolo;
+      if (more) {
+        this.deletedPageOffset++;
+        $("#loadMore").html("<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>")
       }
-      if (dateoffset) {
-        $('#loadMore').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
-        var d = new Date(this.articles[this.articles.length - 1].publish_time);
-        // Add one second to the last article's publish time to avoid duplicates
-        d.setSeconds(d.getSeconds() + 1);
-        path += "&start=" + d.toISOString();
+
+      $("#loading").removeClass("d-none");
+      var path = "/articles?author_id=" + id + "&limit=3&sort=date&pageOffset=" + this.deletedPageOffset;
+      if (titolo != "") {
+        this.deletedPageOffset = 0;
+        path += "&title=" + titolo;
       }
       axios
         .get(API_BASE_URL + path)
         .then(
           (response) => {
-            if (dateoffset) {
-              this.articles = this.articles.concat(response.data.results);
+            if (more) {
+              this.articles = this.articles.concat(response.data.articles);
             } else {
               this.articles = [];
-              this.articles = response.data.results;
+              this.articles = response.data.articles;
             }
-            if (response.data.results.length < 3) {
+            if (response.data.articles.length < 3) {
               this.canLoadMore = false;
             } else {
               this.canLoadMore = true;
@@ -544,7 +544,7 @@ export default {
           },
           (error) => {
             if (error.response.status == 404) {
-              if (dateoffset) {
+              if (more) {
                 this.canLoadMore = false;
                 return;
               }

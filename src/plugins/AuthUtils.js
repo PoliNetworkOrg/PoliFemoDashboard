@@ -3,12 +3,12 @@ import loggers from "@/plugins/ConsoleLoggers";
 import { showToast } from "@/plugins/ToastManager";
 import { usePolifemoStore } from "@/stores/polifemo";
 
-export const API_BASE_URL = "https://api.polinetwork.org:446";
+export const API_BASE_URL = "https://api.polinetwork.org/staging/v1";
 
 export const refreshAuthLogic = async (failedRequest) => {
   loggers.mainLogger.info("Auth", "Invalid token, refreshing...");
   const tokenRefreshResponse = await axios.get(
-    API_BASE_URL + "/v1/auth/refresh",
+    API_BASE_URL + "/auth/refresh",
     {
       headers: {
         Token: localStorage.getItem("polifemo_refresh_token"),
@@ -41,7 +41,7 @@ export const refreshPermissions = async (skipRequest) =>
     }
     const store = usePolifemoStore();
     axios
-      .get(API_BASE_URL + "/v1/accounts/me", {
+      .get(API_BASE_URL + "/accounts/me", {
         headers: {
           Authorization:
             "Bearer " + localStorage.getItem("polifemo_access_token"),
