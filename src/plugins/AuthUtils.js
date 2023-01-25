@@ -7,14 +7,11 @@ export const API_BASE_URL = "https://api.polinetwork.org/staging/v1";
 
 export const refreshAuthLogic = async (failedRequest) => {
   loggers.mainLogger.info("Auth", "Invalid token, refreshing...");
-  const tokenRefreshResponse = await axios.get(
-    API_BASE_URL + "/auth/refresh",
-    {
-      headers: {
-        Token: localStorage.getItem("polifemo_refresh_token"),
-      },
-    }
-  );
+  const tokenRefreshResponse = await axios.get(API_BASE_URL + "/auth/refresh", {
+    headers: {
+      Token: localStorage.getItem("polifemo_refresh_token"),
+    },
+  });
   if (tokenRefreshResponse.status == 200) {
     loggers.mainLogger.info("Auth", "Token refreshed successfully");
     localStorage.setItem(
@@ -69,13 +66,13 @@ export const refreshPermissions = async (skipRequest) =>
       });
   });
 
-export const checkPagePermission = function (permission){
+export const checkPagePermission = function (permission) {
   const store = usePolifemoStore();
   var array = JSON.parse(JSON.stringify(store.perms));
   array.forEach((per) => {
     if (per.grant == permission) {
-      return true
+      return true;
     }
   });
-  return false
-}
+  return false;
+};

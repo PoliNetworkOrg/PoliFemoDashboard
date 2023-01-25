@@ -248,6 +248,7 @@ library.add(
   faArrowUp,
   faArrowDown
 );
+
 Marker.prototype.options.icon = icon({
   iconUrl,
   iconRetinaUrl,
@@ -517,11 +518,17 @@ export default {
       }
       if (more) {
         this.deletedPageOffset++;
-        $("#loadMore").html("<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>")
+        $("#loadMore").html(
+          "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>"
+        );
       }
 
       $("#loading").removeClass("d-none");
-      var path = "/articles?author_id=" + id + "&limit=3&sort=date&pageOffset=" + this.deletedPageOffset;
+      var path =
+        "/articles?author_id=" +
+        id +
+        "&limit=3&sort=date&pageOffset=" +
+        this.deletedPageOffset;
       if (titolo != "") {
         this.deletedPageOffset = 0;
         path += "&title=" + titolo;
@@ -567,7 +574,7 @@ export default {
         )
         .finally(() => {
           $("#loading").addClass("d-none");
-          $('#loadMore').html('Carica altri');
+          $("#loadMore").html("Carica altri");
         });
       return;
     },

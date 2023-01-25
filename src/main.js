@@ -21,10 +21,10 @@ function bootApp() {
         router,
       },
     })
-    .use(createPinia())
-  
-    app.config.globalProperties.emitter = emitter;
-    app.mount("#app");
+    .use(createPinia());
+
+  app.config.globalProperties.emitter = emitter;
+  app.mount("#app");
 }
 
 bootApp();

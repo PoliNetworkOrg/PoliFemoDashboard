@@ -1,4 +1,3 @@
-
 <script setup>
 import { usePolifemoStore } from "/src/stores/polifemo";
 import { storeToRefs } from "pinia";
@@ -11,7 +10,19 @@ const { loggedIn } = storeToRefs(store);
   <div
     class="d-flex flex-column min-vh-80 justify-content-center align-items-center"
   >
-    <LoginButton v-if="!loggedIn" />
+    <div
+      class="justify-content-center d-flex flex-column align-items-center"
+      v-if="!loggedIn"
+    >
+      <LoginButton loginDestination="polimi" loginText="Login con Polimi" />
+      <br />
+      <p>
+        oppure
+        <a href="#" class="nosub" v-on:click="externalLogin"
+          >accedi con un account esterno</a
+        >
+      </p>
+    </div>
 
     <div v-else>
       <h1 class="display-4">Benvenuto</h1>
@@ -24,4 +35,14 @@ const { loggedIn } = storeToRefs(store);
 
 <style>
 @import "@/assets/styles/main.css";
+@import "@/assets/styles/bootstrap-nightshade.min.css";
 </style>
+
+<script>
+function externalLogin() {
+  window.open(
+    "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=92602f24-dd8e-448e-a378-b1c575310f9d&scope=openid%20offline_access&response_type=code&state=10020&prompt=select_account&redirect_uri=https://dashboard.polinetwork.org",
+    "_self"
+  );
+}
+</script>

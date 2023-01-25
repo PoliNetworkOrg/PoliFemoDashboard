@@ -1,11 +1,30 @@
+<script setup>
+defineProps({
+  loginDestination: {
+    type: String,
+    required: true,
+  },
+  loginText: {
+    type: String,
+    required: true,
+  },
+  buttonType: {
+    type: String,
+    required: false,
+    default: "primary",
+  },
+});
+</script>
+
 <template>
   <button
     id="loginbtn"
-    class="btn btn-primary btn-lg btn-block rounded"
+    ref="button"
+    class="btn btn-lg btn-block rounded"
     @click="startLogin()"
   >
     <i class="fas fa-right-to-bracket" />
-    &nbsp; Fai il login per continuare
+    &nbsp; {{ loginText }}
   </button>
 </template>
 
@@ -20,9 +39,11 @@ library.add(faRightToBracket);
 
 export default {
   mounted() {
+    var btn = this.$refs.button;
+    btn.classList.add("btn-" + this.buttonType);
     if (window.location.search.indexOf("code=") > -1) {
-      document.getElementById("loginbtn").innerText = "Login in corso...";
-      document.getElementById("loginbtn").disabled = true;
+      btn.innerText = "Login in corso...";
+      btn.disabled = true;
       var code = window.location.search.split("code=")[1].split("&")[0];
       var state = window.location.search.split("state=")[1].split("&")[0];
       axios
@@ -40,9 +61,8 @@ export default {
           window.location.href = window.location.href.split("?")[0];
         })
         .catch(function (error) {
-          document.getElementById("loginbtn").innerText =
-            "Errore durante il login. Riprova.";
-          document.getElementById("loginbtn").disabled = false;
+          btn.innerText = "Errore durante il login. Riprova.";
+          btn.disabled = false;
           showToast("Si è verificato un errore durante il login", "error");
           loggers.mainLogger.error("Auth", "Login error: " + error);
         });
@@ -50,10 +70,26 @@ export default {
   },
   methods: {
     startLogin() {
-      window.open(
-        "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=92602f24-dd8e-448e-a378-b1c575310f9d&scope=openid%20offline_access&response_type=code&state=10020&prompt=select_account&redirect_uri=https://dashboard.polinetwork.org",
-        "_self"
-      );
+      switch (this.loginDestination) {
+        case "polimi":
+          window.open(
+            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=92602f24-dd8e-448e-a378-b1c575310f9d&scope=openid%20offline_access&response_type=code&state=10020&login_hint=nome@mail.polimi.it&redirect_uri=https://dashboard.polinetwork.org",
+            "_self"
+          );
+          break;
+        case "common":
+          window.open(
+            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=92602f24-dd8e-448e-a378-b1c575310f9d&scope=openid%20offline_access&response_type=code&state=10020&prompt=select_account&redirect_uri=https://dashboard.polinetwork.org",
+            "_self"
+          );
+          break;
+        default:
+          loggers.mainLogger.error(
+            "Auth",
+            "Login destination not recognized: " + loginDestination
+          );
+          break;
+      }
     },
   },
 };

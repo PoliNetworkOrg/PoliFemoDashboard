@@ -130,10 +130,7 @@ export default {
       );
     } else if (window.location.search.indexOf("code=") == -1) {
       loggers.mainLogger.info("Auth", "No token/code found");
-      if (
-        this.$route.path != "/" ||
-        window.location.pathname != "/"
-      ) {
+      if (this.$route.path != "/" || window.location.pathname != "/") {
         this.$router.push("/");
       }
     }
