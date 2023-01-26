@@ -437,6 +437,7 @@ export default {
                   "Article created successfully"
                 );
                 form.reset();
+                $("#extradiv").hide();
               })
               // If the request fails, show an error toast
               .catch(function (error) {
@@ -502,6 +503,16 @@ export default {
               },
             }
           );
+
+          // When editing the time, reduce the width of the widget
+          $("#extraorario").on("update.td", function (e) {
+            if (e.viewMode === "clock") {
+              $(".tempus-dominus-widget").css("width", "150px");
+            } else {
+              $(".tempus-dominus-widget").css("width", "19rem");
+            }
+          });
+
         } else {
           document.getElementById("extra-div").classList.add("d-none");
         }

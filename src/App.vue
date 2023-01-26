@@ -26,9 +26,9 @@ const { loggedIn } = storeToRefs(store);
     />
   </header>
 
-  <nav id="navbar" class="navbar navbar-expand-md navbar-dark bg-dark">
+  <nav id="navbar" class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
     <RouterLink to="/" class="navbar-title">
-      <a class="navbar-brand ms-2">PoliFemo Dashboard</a>
+      <a class="navbar-brand ms-3">PoliFemo Dashboard</a>
     </RouterLink>
     <button
       class="navbar-toggler"
