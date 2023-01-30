@@ -12,7 +12,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@vitejs/plugin-vue": "^3.2.0",
-    "axios": "^1.2.3",
+    "axios": "^1.2.6",
     "axios-auth-refresh": "^3.3.6",
     "leaflet": "^1.9.3",
     "mitt": "^3.0.0",
