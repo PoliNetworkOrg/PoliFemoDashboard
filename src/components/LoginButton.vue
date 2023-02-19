@@ -73,13 +73,13 @@ export default {
       switch (this.loginDestination) {
         case "polimi":
           window.open(
-            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=92602f24-dd8e-448e-a378-b1c575310f9d&scope=openid%20offline_access&response_type=code&state=10020&login_hint=nome@mail.polimi.it&redirect_uri=https://dashboard.polinetwork.org",
+            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=a06b160b-8d5d-4be2-b452-ea3b768998ed&scope=openid%20offline_access&response_type=code&state=10020&login_hint=nome@mail.polimi.it&redirect_uri=https://dashboard.polinetwork.org",
             "_self"
           );
           break;
         case "common":
           window.open(
-            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=92602f24-dd8e-448e-a378-b1c575310f9d&scope=openid%20offline_access&response_type=code&state=10020&prompt=select_account&redirect_uri=https://dashboard.polinetwork.org",
+            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=a06b160b-8d5d-4be2-b452-ea3b768998ed&scope=openid%20offline_access&response_type=code&state=10020&prompt=select_account&redirect_uri=https://dashboard.polinetwork.org",
             "_self"
           );
           break;
