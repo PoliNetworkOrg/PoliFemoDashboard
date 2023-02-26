@@ -16,10 +16,15 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import("@/views/ArticlesView.vue"),
     },
+    {
+      path: "/permessi",
+      name: "permessi",
+      component: () => import("@/views/PermissionsView.vue"),
+    }
   ],
 });
 
-const validRoutes = ["/", "/articoli"];
+const validRoutes = ["/", "/articoli", "/permessi"];
 
 router.beforeEach((to, from, next) => {
   if (validRoutes.includes(to.path)) {

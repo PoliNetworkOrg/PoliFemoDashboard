@@ -8,7 +8,6 @@ import LogoutBarItem from "@/components/barItems/LogoutBarItem.vue";
 import BarItem from "@/components/barItems/BarItem.vue";
 import loggers from "@/plugins/ConsoleLoggers";
 import { usePolifemoStore } from "@/stores/polifemo";
-import PermissionsIcon from "@/assets/icons/PermissionsIcon.vue";
 
 dom.watch();
 
@@ -50,7 +49,12 @@ const { loggedIn } = storeToRefs(store);
           icon="fa-newspaper"
           permission="authors"
         />
-        <BarItem dest="permessi" title="Permessi" :icon="PermissionsIcon" />
+        <BarItem
+          dest="permessi"
+          title="Permessi"
+          icon="fa-tag" 
+          permission="permissions"
+        />
       </ul>
 
       <ul class="navbar-nav ms-auto me-2">
@@ -62,7 +66,7 @@ const { loggedIn } = storeToRefs(store);
 
   <div class="router-view">
     <RouterView />
-  </div>
+  </div>  
   <!-- The toast stack is used to display messges from all the components -->
   <div aria-live="polite" aria-atomic="true" class="position-relative">
     <div
@@ -88,6 +92,12 @@ const { loggedIn } = storeToRefs(store);
           />
         </div>
       </div>
+    </div>
+  </div>
+  <div class="fixed-bottom w-100 text-muted">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+      by
+      <a class="text-reset fw-bold" href="https://polinetwork.org">PoliNetwork</a>
     </div>
   </div>
 </template>

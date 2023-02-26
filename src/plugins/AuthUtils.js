@@ -45,6 +45,7 @@ export const refreshPermissions = async (skipRequest) =>
         },
       })
       .then((response) => {
+        store.userid = response.data.id;
         store.perms = response.data.permissions;
         store.authorizedauthors = response.data.authorized_authors;
         if (store.perms == "") {
@@ -67,12 +68,14 @@ export const refreshPermissions = async (skipRequest) =>
   });
 
 export const checkPagePermission = function (permission) {
+  var found = false;
   const store = usePolifemoStore();
   var array = JSON.parse(JSON.stringify(store.perms));
   array.forEach((per) => {
     if (per.grant == permission) {
+      found = true;
       return true;
     }
   });
-  return false;
+  return found;
 };

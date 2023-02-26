@@ -1,7 +1,7 @@
 <script setup>
-import { faMoon, faSun, faNewspaper } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun, faNewspaper, faTag } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
-library.add(faMoon, faSun, faNewspaper);
+library.add(faMoon, faSun, faNewspaper, faTag);
 
 defineProps({
   dest: {

@@ -210,6 +210,7 @@
           </div>
         </div>
       </div>
+      <div class="container spacer"></div>
     </div>
   </div>
 </template>
@@ -466,7 +467,10 @@ export default {
     // If the user lands on this page without a valid permission store, check for permissions once
     // the permissions-loaded event is received
     this.emitter.on("permissions-refreshed", () => {
-      checkPagePermission("authors");
+      if (!checkPagePermission("authors")) {
+        this.$router.push("/");
+        showToast("Non hai i permessi per accedere alla pagina richiesta. Sei stato portato alla home.", "error");
+      }
     });
 
     // If an article is deleted, remove it from the list
