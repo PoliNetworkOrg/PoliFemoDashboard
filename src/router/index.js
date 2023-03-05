@@ -20,7 +20,7 @@ const router = createRouter({
       path: "/permessi",
       name: "permessi",
       component: () => import("@/views/PermissionsView.vue"),
-    }
+    },
   ],
 });
 

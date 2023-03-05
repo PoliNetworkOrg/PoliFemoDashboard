@@ -3,17 +3,18 @@ import {
   faUser,
   faNewspaper,
   faTag,
-  faXmark
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import axios from "axios";
 import { API_BASE_URL } from "@/plugins/AuthUtils";
 import loggers from "@/plugins/ConsoleLoggers";
+import autofill from "@/stores/autofill";
 import { showToast } from "@/plugins/ToastManager";
 defineProps({
   userid: {
     type: String,
-    required: true
+    required: true,
   },
   objectid: {
     type: Number,
@@ -22,7 +23,7 @@ defineProps({
   grant: {
     type: String,
     required: true,
-  }
+  },
 });
 
 library.add(faUser, faNewspaper, faTag, faXmark);
@@ -35,7 +36,9 @@ library.add(faUser, faNewspaper, faTag, faXmark);
         <h5 class="col ms-2 mt-1 text-truncate">
           <i class="fas fa-user"></i>
           <span v-if="!objectid">&nbsp; {{ grant }}</span>
-          <span v-else>&nbsp; {{ grant }} &bull; {{ this.$parent.autofill[grant][objectid] }}</span>
+          <span v-else>
+            &nbsp; {{ grant }} &bull; {{ autofill[grant][objectid] }}
+          </span>
         </h5>
       </div>
       <div class="col-4">
@@ -67,7 +70,7 @@ export default {
 
         var data = {
           grant: this.grant,
-          object_id: this.objectid ?? null
+          object_id: this.objectid ?? null,
         };
 
         axios
@@ -89,8 +92,7 @@ export default {
             );
             loggers.mainLogger.error("permessi", error);
             showToast(
-              "Errore nella revoca del permesso: " +
-                error.response.data.error,
+              "Errore nella revoca del permesso: " + error.response.data.error,
               "error"
             );
           })

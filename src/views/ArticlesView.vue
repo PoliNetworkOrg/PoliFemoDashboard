@@ -469,7 +469,10 @@ export default {
     this.emitter.on("permissions-refreshed", () => {
       if (!checkPagePermission("authors")) {
         this.$router.push("/");
-        showToast("Non hai i permessi per accedere alla pagina richiesta. Sei stato portato alla home.", "error");
+        showToast(
+          "Non hai i permessi per accedere alla pagina richiesta. Sei stato portato alla home.",
+          "error"
+        );
       }
     });
 
@@ -516,7 +519,6 @@ export default {
               $(".tempus-dominus-widget").css("width", "19rem");
             }
           });
-
         } else {
           document.getElementById("extra-div").classList.add("d-none");
         }

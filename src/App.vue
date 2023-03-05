@@ -25,7 +25,10 @@ const { loggedIn } = storeToRefs(store);
     />
   </header>
 
-  <nav id="navbar" class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+  <nav
+    id="navbar"
+    class="navbar navbar-expand-md navbar-dark bg-dark sticky-top"
+  >
     <RouterLink to="/" class="navbar-title">
       <a class="navbar-brand ms-3">PoliFemo Dashboard</a>
     </RouterLink>
@@ -52,7 +55,7 @@ const { loggedIn } = storeToRefs(store);
         <BarItem
           dest="permessi"
           title="Permessi"
-          icon="fa-tag" 
+          icon="fa-tag"
           permission="permissions"
         />
       </ul>
@@ -66,7 +69,7 @@ const { loggedIn } = storeToRefs(store);
 
   <div class="router-view">
     <RouterView />
-  </div>  
+  </div>
   <!-- The toast stack is used to display messges from all the components -->
   <div aria-live="polite" aria-atomic="true" class="position-relative">
     <div
@@ -95,9 +98,11 @@ const { loggedIn } = storeToRefs(store);
     </div>
   </div>
   <div class="fixed-bottom w-100 text-muted">
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05)">
       by
-      <a class="text-reset fw-bold" href="https://polinetwork.org">PoliNetwork</a>
+      <a class="text-reset fw-bold" href="https://polinetwork.org">
+        PoliNetwork
+      </a>
     </div>
   </div>
 </template>
