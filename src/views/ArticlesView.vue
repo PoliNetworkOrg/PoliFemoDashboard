@@ -499,7 +499,7 @@ export default {
               title: $("#titoloArticolo").val(),
               author_id: parseInt($("#selectmittente").val()),
               tag_id: $("#selectcategoria").val(),
-              selectedplats: selectedplats,
+              platforms: selectedplats,
             };
 
             datetime = window.extraorario.dates;
@@ -522,7 +522,7 @@ export default {
               data["image"] = thumbnail;
             }
 
-            delayedrelease = window.datetimepickerdelay.dates;
+            var delayedrelease = window.datetimepickerdelay.dates;
             if (delayedrelease.picked.length > 0) {
               data["hidden_until"] = delayedrelease.picked[0];
             }
