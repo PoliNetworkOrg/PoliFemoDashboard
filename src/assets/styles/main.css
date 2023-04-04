@@ -32,3 +32,9 @@
 .spacer {
   margin-top: 100px;
 }
+
+.light-link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #557392;
+}

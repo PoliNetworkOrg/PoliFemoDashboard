@@ -133,9 +133,60 @@
                   required
                 />
               </div>
-              <button id="submit" type="submit" class="btn btn-primary rounded">
-                Invia
-              </button>
+              <br>
+              <p class="mb-1">Su quali piattaforme vorresti pubblicare l'articolo?</p>
+              <div id="extraplat" class="form-check">
+                <input
+                    id="plat-app"
+                    class="form-check-input"
+                    type="checkbox"
+                    value="1"
+                  />
+                  <label class="form-check-label ms-2" for="plat-app">
+                    PoliFemo
+                  </label>
+                <br>
+                <input
+                    id="plat-tg"
+                    class="form-check-input"
+                    type="checkbox"
+                    value="2"
+                  />
+                  <label class="form-check-label ms-2" for="plat-tg">
+                    Telegram
+                  </label>
+                <div class="invalid-feedback">Devi selezionare almeno una piattaforma.</div>
+              </div>
+              <br>
+              <div>
+                <div
+                  id="datetimepickerdelay"
+                  class="input-group"
+                  data-td-target-input="nearest"
+                  style="width: 200px"
+                  data-td-target-toggle="nearest"
+                >
+                  <label class="mb-1" for="datetimepickerdelay">Pubblicazione programmata</label>
+                  <input
+                    id="datetimepicker2Input"
+                    type="text"
+                    class="form-control"
+                    data-td-target="#datetimepickerdelay"
+                  />
+                  <span
+                    class="input-group-text"
+                    data-td-target="#datetimepickerdelay"
+                    data-td-toggle="datetimepicker"
+                  >
+                    <span class="fas fa-calendar" />
+                  </span>
+                </div>
+              </div>
+              <div class="mt-4">
+                <button id="submit" type="submit" class="btn btn-primary rounded">
+                  Invia
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -223,6 +274,7 @@ import {
   faClock,
   faArrowUp,
   faArrowDown,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { TempusDominus } from "@eonasdan/tempus-dominus";
@@ -246,6 +298,7 @@ library.add(
   faChevronLeft,
   faCalendar,
   faClock,
+  faTrash,
   faArrowUp,
   faArrowDown
 );
@@ -307,6 +360,19 @@ export default {
       });
     });
 
+    // Initialize the datepicker for the delay
+    window.datetimepickerdelay = new TempusDominus(
+      document.getElementById("datetimepickerdelay"),
+      {
+        display: {
+          theme: store.darkModeEnabled ? "dark" : "light", // Display the correct theme based on the stored preference
+          buttons: {
+            clear: true
+          }
+        },
+      }
+    );
+
     // Second accordion (remove articles)
     $("#collapseTwo").on("show.bs.collapse", function () {
       idau = 0;
@@ -340,7 +406,7 @@ export default {
       });
     });
 
-    //Fetch categories and fill the select
+    // Fetch categories and fill the select
     axios
       .get(API_BASE_URL + "/tags")
       .then((response) => {
@@ -357,7 +423,10 @@ export default {
         loggers.mainLogger.error("articoli", error);
       });
 
-    //INSERTION FORM: On submission, check for field requirements and perform additional check on the image url field
+
+    $('#datetimepickerdelay').on('change.td', () => this.isDelayed = true);
+
+    // INSERTION FORM: On submission, check for field requirements and perform additional check on the image url field
     const forms = document.querySelectorAll("#articolo");
     Array.from(forms).forEach((form) => {
       form.addEventListener(
@@ -371,6 +440,36 @@ export default {
             event.preventDefault();
             event.stopPropagation();
 
+            // Generate the number from the selected platforms
+            var selectedplats = 0
+            var allchecks = []
+            $("#extraplat input").each(function () {
+              allchecks.push(this);
+              if (this.checked) {
+                selectedplats += parseInt(this.value);
+              }
+
+            });
+
+            // Additional checks
+            var validPlat = true;
+            var validImageUrl = true;
+
+            // Check if at least one platform is selected
+            console.log(selectedplats);
+            if (selectedplats == 0) {
+              allchecks.forEach(element => {
+                $(element).addClass("is-invalid");
+              });
+              validPlat = false;
+            } else {
+              allchecks.forEach(element => {
+                $(element).removeClass("is-invalid");
+              });
+              validPlat = true;
+            }
+
+            // Check if the image url is valid
             var thumbnail = "",
               datetime;
             if (
@@ -380,10 +479,15 @@ export default {
                 .match(/^(http|https):\/\/[^ "]+$/)
             ) {
               $("#copertinaArticolo").addClass("is-invalid");
-              return;
+              validImageUrl = false;
             } else {
               $("#copertinaArticolo").removeClass("is-invalid");
               thumbnail = $("#copertinaArticolo").val();
+              validImageUrl = true;
+            }
+
+            if (!validPlat || !validImageUrl) {
+              return;
             }
 
             // Build and send the request
@@ -395,6 +499,7 @@ export default {
               title: $("#titoloArticolo").val(),
               author_id: parseInt($("#selectmittente").val()),
               tag_id: $("#selectcategoria").val(),
+              selectedplats: selectedplats,
             };
 
             datetime = window.extraorario.dates;
@@ -417,6 +522,11 @@ export default {
               data["image"] = thumbnail;
             }
 
+            delayedrelease = window.datetimepickerdelay.dates;
+            if (delayedrelease.picked.length > 0) {
+              data["hidden_until"] = delayedrelease.picked[0];
+            }
+            
             axios
               .post(API_BASE_URL + "/articles", data, {
                 headers: {
