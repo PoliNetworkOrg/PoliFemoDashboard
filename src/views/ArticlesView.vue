@@ -1,3 +1,7 @@
+<style>
+@import "cherry-markdown/dist/cherry-markdown.css";
+</style>
+// All of this can (and should) be edited to use v-models
 <template>
   <header>
     <meta charset="utf-8" />
@@ -40,6 +44,14 @@
                   aria-label="Seleziona mittente"
                 />
               </div>
+              <br>
+              <div class="btn-group" role="group" aria-label="Language toggle button group">
+                <input type="radio" v-model="selectedLanguage" v-on:click="saveAndLoadArticleContent($event.target)" class="btn-check rounded-pill" value="ita" name="btnradio" id="btnradioita" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="btnradioita">ITA</label>
+
+                <input type="radio" v-model="selectedLanguage" v-on:click="saveAndLoadArticleContent($event.target)" class="btn-check rounded-end" value="eng" name="btnradio" id="btnradioeng" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradioeng">ENG</label>
+              </div>
               <div class="mb-3 mt-4">
                 <label for="titoloArticolo" class="form-label">Titolo</label>
                 <input
@@ -62,16 +74,9 @@
                   class="form-control"
                 />
               </div>
-              <div class="mb-3 mt-3">
-                <textarea
-                  id="editor"
-                  class="form-control"
-                  name="editordata"
-                  required
-                />
-                <div class="invalid-feedback">
-                  Il corpo dell'articolo non può essere vuoto.
-                </div>
+              <p><a href="https://www.markdownguide.org/cheat-sheet/">Guida al Markdown</a></p>
+              <div id="editor-wrapper" class="mb-3 mt-3">
+                <div id="markdown-editor" class="cherry-editor-height" />
               </div>
               <div class="mb-3 mt-4">
                 <label for="copertinaArticolo" class="form-label">
@@ -289,6 +294,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet/dist/leaflet-src.js";
 import loggers from "@/plugins/ConsoleLoggers";
 import axios from "axios";
+import Cherry from 'cherry-markdown/dist/cherry-markdown.core';
 import { API_BASE_URL, checkPagePermission } from "@/plugins/AuthUtils";
 import { showToast } from "@/plugins/ToastManager";
 import ArticleListItem from "@/components/ArticleListItem.vue";
@@ -321,6 +327,9 @@ export default {
       articles: [],
       canLoadMore: true,
       deletedPageOffset: 0,
+      articlecontent: {ita: {}, eng: {}},
+      cherryInstance: null,
+      selectedLanguage: 'ita'
     };
   },
   mounted() {
@@ -330,15 +339,17 @@ export default {
       marker = null,
       idau = 0;
 
+    // Initialize the markdown editor
+    this.cherryInstance = this.startEditor();
+
+    if (store.darkModeEnabled) {
+      this.cherryInstance.setTheme('dark');
+    }
+
+
     // First accordion (add articles)
-    // Initialize summernote and remove the image insertion button that we don't use
     $("#accordionAggiungi").on("show.bs.collapse", function () {
-      $("#editor").summernote({
-        placeholder: "Scrivi qui...",
-        tabsize: 2,
-        height: 100,
-      });
-      $("div.note-group-select-from-files").remove();
+      
 
       // Fill the authors select
       var array = JSON.parse(JSON.stringify(store.perms));
@@ -454,9 +465,9 @@ export default {
             // Additional checks
             var validPlat = true;
             var validImageUrl = true;
+            var validBody = true;
 
             // Check if at least one platform is selected
-            console.log(selectedplats);
             if (selectedplats == 0) {
               allchecks.forEach(element => {
                 $(element).addClass("is-invalid");
@@ -468,6 +479,9 @@ export default {
               });
               validPlat = true;
             }
+
+            // Check if the body is not empty
+            validBody = this.cherryInstance.getMarkdown() != "";
 
             // Check if the image url is valid
             var thumbnail = "",
@@ -486,31 +500,44 @@ export default {
               validImageUrl = true;
             }
 
-            if (!validPlat || !validImageUrl) {
+            if (!validPlat || !validImageUrl || !validBody) {
               return;
             }
 
             // Build and send the request
             $("#submit").attr("disabled", true);
             $("#submit").html("Invio...");
-            var body = $("#editor").summernote("code");
+
+            this.articlecontent[this.selectedLanguage].title = $("#titoloArticolo").val();
+            this.articlecontent[this.selectedLanguage].subtitle = $("#sottotitoloArticolo").val() || null;
+            this.articlecontent[this.selectedLanguage].content = this.cherryInstance.getMarkdown();
+
             var data = {
-              content: body,
-              title: $("#titoloArticolo").val(),
+              content: [
+                {
+                  title:  this.articlecontent.ita.title,
+                  subtitle: this.articlecontent.ita.subtitle,
+                  content: this.articlecontent.ita.content,
+                },
+                {
+                  title:  this.articlecontent.eng.title,
+                  subtitle: this.articlecontent.eng.subtitle,
+                  content: this.articlecontent.eng.content,
+                }
+              ],
               author_id: parseInt($("#selectmittente").val()),
-              tag_id: $("#selectcategoria").val(),
+              tag: $("#selectcategoria").val(),
               platforms: selectedplats,
             };
 
+            if (this.articlecontent.eng.title == null) {
+              data.content.pop();
+            }
+
             datetime = window.extraorario.dates;
-            var subtitle = $("#sottotitoloArticolo").val();
 
             if (datetime != null) {
               data["target_time"] = datetime.picked[0];
-            }
-
-            if (subtitle != "") {
-              data["subtitle"] = subtitle;
             }
 
             if (marker != null) {
@@ -591,7 +618,7 @@ export default {
       this.articles = this.articles.filter((article) => article.id != id);
     });
 
-    // Initialize extra libraries (leaflet, tempusdominus, summernote).
+    // Initialize extra libraries (leaflet, tempusdominus).
     // Only needed if the article needs "extra" fields (location and/or date)
     document
       .getElementById("checkExtra")
@@ -654,7 +681,7 @@ export default {
       var path =
         "/articles?author_id=" +
         id +
-        "&limit=3&sort=date&pageOffset=" +
+        "&limit=3&sort=date&platform=3&pageOffset=" +
         this.deletedPageOffset;
       if (titolo != "") {
         this.deletedPageOffset = 0;
@@ -705,6 +732,63 @@ export default {
         });
       return;
     },
+    saveAndLoadArticleContent(el) {
+      // If the button clicked is the english one, save the italian content and load the english one
+      if (el.id == "btnradioita") {
+        this.articlecontent.eng.title = $("#titoloArticolo").val();
+        this.articlecontent.eng.subtitle = $("#sottotitoloArticolo").val();
+        this.articlecontent.eng.content = this.cherryInstance.getMarkdown();
+
+        $("#titoloArticolo").val(this.articlecontent.ita.title);
+        $("#sottotitoloArticolo").val(this.articlecontent.ita.subtitle);
+        this.cherryInstance = this.startEditor(this.articlecontent.ita.content || "");
+
+      } else {
+        this.articlecontent.ita.title = $("#titoloArticolo").val();
+        this.articlecontent.ita.subtitle = $("#sottotitoloArticolo").val();
+        this.articlecontent.ita.content = this.cherryInstance.getMarkdown();
+
+        $("#titoloArticolo").val(this.articlecontent.eng.title);
+        $("#sottotitoloArticolo").val(this.articlecontent.eng.subtitle);
+        this.cherryInstance = this.startEditor(this.articlecontent.eng.content || "");
+        ///this.startEditor(this.cherryInstance, this.articlecontent.eng.content || "# hello");
+      }
+    },
+    startEditor(value) {
+      loggers.mainLogger.info("articoli", "Starting editor");
+      // Due to a bug (which is marked as fixed on GitHub...) we need to destroy the instance and recreate it
+      var editor = $("#editor-wrapper").children()[0];
+      $(editor).remove();
+      //$("#editor-wrapper").empty();
+      $("#editor-wrapper").append("<div id='markdown-editor' class='cherry-editor-height'></div>");
+      
+      return new Cherry({
+        id: 'markdown-editor',
+        value: value || '',
+        toolbars: {
+          showToolbar: true,
+          toolbar: [
+            'bold',
+            'italic',
+            'strikethrough',
+            'underline',
+            'sub',
+            'sup',
+            'quote',
+            '|',
+            'size',
+            '|',
+            'checklist',
+            'list',
+            'link',
+            'table'
+          ],
+          bubble: ['bold', 'italic', 'underline', 'strikethrough', 'sub', 'sup', 'quote'],
+          float: []
+        },
+        locale: 'en_US'
+      });
+    }
   },
 };
 </script>

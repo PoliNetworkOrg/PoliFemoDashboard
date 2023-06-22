@@ -13,14 +13,6 @@ defineProps({
     type: Number,
     required: true,
   },
-  title: {
-    type: String,
-    required: true,
-  },
-  subtitle: {
-    type: String,
-    required: false,
-  },
   targettime: {
     type: String,
     required: false,
@@ -30,7 +22,7 @@ defineProps({
     required: false,
   },
   content: {
-    type: String,
+    type: Object,
     required: true,
   },
 });
@@ -46,10 +38,10 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
           <i class="fas fa-calendar" v-if="targettime != null"></i>
           <span v-if="targettime != null && location">&nbsp;</span>
           <i class="fas fa-location-dot" v-if="location"></i>
-          {{ title }}
+          {{ content.it.title }}
         </h5>
-        <div class="col text-truncate" v-if="subtitle != null">
-          {{ subtitle }}
+        <div class="col text-truncate" v-if="content.it.subtitle != null">
+          {{ content.it.subtitle }}
         </div>
         <div class="col text-truncate" v-else>Nessun sottotitolo</div>
       </div>
@@ -59,7 +51,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
             type="button"
             id="btn-preview"
             v-on:click="preview"
-            class="btn btn-info rounded-start h-100 btn-list-item-action"
+            class="btn no-border btn-info rounded-start h-100 btn-list-item-action"
           >
             <i class="fas fa-eye"></i>
           </button>
@@ -67,7 +59,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
             type="button"
             v-on:click="remove"
             id="btn-delete"
-            class="btn btn-danger rounded-end h-100 btn-list-item-action"
+            class="btn no-border btn-danger rounded-end h-100 btn-list-item-action"
           >
             <i class="fas fa-trash-can"></i>
           </button>

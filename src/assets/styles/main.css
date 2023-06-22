@@ -17,7 +17,7 @@
   cursor: pointer;
 }
 
-.btn {
+.no-border {
   border-radius: 0 !important;
 }
 
@@ -37,4 +37,12 @@
   cursor: pointer;
   text-decoration: underline;
   color: #557392;
+}
+
+.cherry-highlight-line {
+  background-color: #00000000!important;
+}
+
+.cherry-editor-height {
+  height: 200px!important;
 }
