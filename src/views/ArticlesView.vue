@@ -544,7 +544,7 @@ export default {
       var path =
         "/articles?author_id=" +
         id +
-        "&limit=3&sort=date&pageOffset=" +
+        "&limit=3&sort=date&platform=3&pageOffset=" +
         this.deletedPageOffset;
       if (titolo != "") {
         this.deletedPageOffset = 0;
