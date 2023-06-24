@@ -1,15 +1,10 @@
 <style>
 @import "cherry-markdown/dist/cherry-markdown.css";
 </style>
-// All of this can (and should) be edited to use v-models
 <template>
   <header>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs5.css"
-    />
   </header>
   <div class="container mt-5">
     <div id="accordionAggiungi" class="accordion mb-4">
@@ -245,8 +240,6 @@
               <ArticleListItem
                 v-for="item in this.articles"
                 :key="item.id"
-                v-bind:title="item.title"
-                v-bind:subtitle="item.subtitle"
                 v-bind:content="item.content"
                 v-bind:targettime="item.target_time"
                 v-bind:location="item.latitude != null"
@@ -289,7 +282,6 @@ import L, { icon, Marker } from "leaflet";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
-import "/public/js/summernote-bs5.min.js";
 import "leaflet/dist/leaflet.css";
 import "leaflet/dist/leaflet-src.js";
 import loggers from "@/plugins/ConsoleLoggers";
@@ -333,7 +325,6 @@ export default {
     };
   },
   mounted() {
-    var env = this;
     const store = usePolifemoStore();
     let mappa,
       marker = null,
@@ -385,7 +376,7 @@ export default {
     );
 
     // Second accordion (remove articles)
-    $("#collapseTwo").on("show.bs.collapse", function () {
+    $("#collapseTwo").on("show.bs.collapse", () => {
       idau = 0;
       $("#selectMittenteDel").empty();
       // Fill the authors select
@@ -407,13 +398,13 @@ export default {
       });
 
       // Refresh the list of articles of the selected author
-      $("#selectMittenteDel").change(function () {
-        env.getArticlesFromAuthor();
+      $("#selectMittenteDel").change(() => {
+        this.getArticlesFromAuthor();
       });
 
       // Refresh the list of articles based on the changed title
-      $("#titoloArticoloDel").change(function () {
-        env.getArticlesFromAuthor();
+      $("#titoloArticoloDel").change(() => {
+        this.getArticlesFromAuthor();
       });
     });
 
