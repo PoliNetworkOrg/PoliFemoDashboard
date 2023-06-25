@@ -13,14 +13,6 @@ defineProps({
     type: Number,
     required: true,
   },
-  title: {
-    type: String,
-    required: true,
-  },
-  subtitle: {
-    type: String,
-    required: false,
-  },
   targettime: {
     type: String,
     required: false,
@@ -30,7 +22,7 @@ defineProps({
     required: false,
   },
   content: {
-    type: String,
+    type: Object,
     required: true,
   },
 });
@@ -46,10 +38,10 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
           <i class="fas fa-calendar" v-if="targettime != null"></i>
           <span v-if="targettime != null && location">&nbsp;</span>
           <i class="fas fa-location-dot" v-if="location"></i>
-          {{ title }}
+          {{ content.it.title || content.en.title }}
         </h5>
-        <div class="col text-truncate" v-if="subtitle != null">
-          {{ subtitle }}
+        <div class="col text-truncate" v-if="!content.it.subtitle || !content.en.subtitle">
+          {{ content.it.subtitle || content.en.subtitle }}
         </div>
         <div class="col text-truncate" v-else>Nessun sottotitolo</div>
       </div>
@@ -59,7 +51,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
             type="button"
             id="btn-preview"
             v-on:click="preview"
-            class="btn btn-info rounded-start h-100 btn-list-item-action"
+            class="btn no-border btn-info rounded-start h-100 btn-list-item-action"
           >
             <i class="fas fa-eye"></i>
           </button>
@@ -67,36 +59,45 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
             type="button"
             v-on:click="remove"
             id="btn-delete"
-            class="btn btn-danger rounded-end h-100 btn-list-item-action"
+            class="btn no-border btn-danger rounded-end h-100 btn-list-item-action"
           >
             <i class="fas fa-trash-can"></i>
           </button>
         </div>
       </div>
     </div>
-    <div id="preview-box" class="mt-2 border rounded d-none"></div>
+    <div :id="'preview-box-' + id" class="mt-2 border rounded d-none"></div>
   </div>
 </template>
 
 <script>
+import Cherry from 'cherry-markdown/dist/cherry-markdown.core';
 export default {
+  data() {
+    return {
+      cherryEditor: null,
+      previewBox: null
+    };
+  },
+  mounted() {
+    this.previewBox = this.$el.querySelector("#preview-box-" + this.id);
+  },
   methods: {
     preview() {
-      var pb = this.$el.querySelector("#preview-box");
-      if (pb.classList.contains("d-none")) {
-        var t = JSON.parse(this.content);
-        t.forEach((elem) => {
-          var temp = document.createElement("p");
-          temp.classList.add("ms-2");
-          temp.classList.add("me-2");
-          temp.classList.add("mt-2");
-          temp.innerHTML = elem;
-          pb.appendChild(temp);
-        });
-        $(pb).removeClass("d-none");
+      if (this.cherryEditor && $(this.previewbox).hasClass("d-none")) {
+        $(previewbox).removeClass("d-none");
+      } else if (this.cherryEditor && !$(this.previewBox).hasClass("d-none")) {
+        $(this.previewBox).addClass("d-none");
       } else {
-        $(pb).addClass("d-none");
-        pb.innerHTML = "";
+        this.cherryEditor = new Cherry({
+          id: "preview-box-" + this.id, // Need this trick to avoid a bug always creating the editor in the first element of the list
+          value: this.content.it.content || this.content.en.content,
+          locale: "en_US",
+          editor: {
+            defaultModel: "previewOnly"
+          }
+        });
+        $(this.previewBox).removeClass("d-none");
       }
     },
 
