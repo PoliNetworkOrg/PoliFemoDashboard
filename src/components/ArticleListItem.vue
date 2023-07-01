@@ -40,7 +40,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
           <i class="fas fa-location-dot" v-if="location"></i>
           {{ content.it.title || content.en.title }}
         </h5>
-        <div class="col text-truncate" v-if="!content.it.subtitle || !content.en.subtitle">
+        <div class="col text-truncate" v-if="content.it.subtitle || content.en.subtitle">
           {{ content.it.subtitle || content.en.subtitle }}
         </div>
         <div class="col text-truncate" v-else>Nessun sottotitolo</div>

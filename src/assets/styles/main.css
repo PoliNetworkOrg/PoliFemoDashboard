@@ -46,3 +46,8 @@
 .cherry-editor-height {
   height: 200px!important;
 }
+
+.dotted-underline {
+  border-bottom: 2px dotted;
+  display: inline;
+}
