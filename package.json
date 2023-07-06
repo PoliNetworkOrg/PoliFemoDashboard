@@ -17,7 +17,7 @@
     "cherry-markdown": "^0.8.20",
     "leaflet": "^1.9.4",
     "mitt": "^3.0.0",
-    "pinia": "^2.0.32",
+    "pinia": "^2.1.4",
     "vite": "^3.2.7",
     "vue": "^3.2.47",
     "vue-router": "^4.2.3"
