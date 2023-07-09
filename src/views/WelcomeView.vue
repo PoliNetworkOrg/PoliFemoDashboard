@@ -22,7 +22,7 @@
         Seleziona una delle categorie e scegli l'operazione da eseguire.
       </p>
       <br>
-      <p class="text-secondary">ID: <a :click="copyId()" alt="Copia" class="nosub text-reset dotted-underline" href="#">{{ userid }}</a> <i id="copybtn" class="fa fa-sm fa-copy"></i></p>
+      <p class="text-secondary">ID: <a @click="copyId()" alt="Copia" class="nosub text-reset dotted-underline" href="#">{{ userid }}</a> <i id="copybtn" class="fa fa-sm fa-copy"></i></p>
     </div>
   </div>
 </template>
