@@ -23,6 +23,6 @@
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
-    "prettier": "^3.0.1"
+    "prettier": "^3.0.2"
   }
 }
