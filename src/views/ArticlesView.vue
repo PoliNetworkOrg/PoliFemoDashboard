@@ -29,15 +29,16 @@
         >
           <div class="accordion-body">
             <form id="articolo" class="needs-validation" novalidate>
-              <div>
-                <label for="mittente" class="form-label">
-                  Mittente articolo
-                </label>
+              <div class="form-floating">
                 <select
                   id="selectmittente"
                   class="form-select"
                   aria-label="Seleziona mittente"
+                  v-model="requestbody.author_id"
                 />
+                <label for="selectmittente">
+                  Autore
+                </label>  
               </div>
               <br>
               <div class="btn-group" role="group" aria-label="Language toggle button group">
@@ -47,41 +48,45 @@
                 <input type="radio" v-model="selectedLanguage" v-on:click="saveAndLoadArticleContent($event.target)" class="btn-check rounded-end" value="eng" name="btnradio" id="btnradioeng" autocomplete="off">
                 <label class="btn btn-outline-primary" for="btnradioeng">ENG</label>
               </div>
-              <div class="mb-3 mt-4">
-                <label for="titoloArticolo" class="form-label">Titolo</label>
+              <div class="form-floating mb-3 mt-4">
                 <input
                   id="titoloArticolo"
                   type="text"
                   class="form-control"
+                  placeholder="Titolo articolo"
                   required
                 />
+                <label for="titoloArticolo">Titolo</label>
                 <div class="invalid-feedback">
-                  L'oggetto non può essere vuoto.
+                  Il titolo non può essere vuoto.
                 </div>
               </div>
-              <div class="mb-3 mt-4">
-                <label for="oggettoArticolo" class="form-label">
-                  Sottotitolo
-                </label>
+              <div class="form-floating mb-3 mt-4">
                 <input
-                  id="sottotitoloArticolo"
+                  id="sottArticolo"
                   type="text"
                   class="form-control"
+                  placeholder="Sottotitolo articolo"
                 />
+                <label for="sottArticolo" class="form-label">
+                  Sottotitolo
+                </label>
               </div>
               <p><a href="https://www.markdownguide.org/cheat-sheet/">Guida al Markdown</a></p>
               <div id="editor-wrapper" class="mb-3 mt-3">
                 <div id="markdown-editor" class="cherry-editor-height" />
               </div>
-              <div class="mb-3 mt-4">
-                <label for="copertinaArticolo" class="form-label">
-                  URL immagine di copertina
-                </label>
+              <div class="form-floating mb-3 mt-4">
                 <input
                   id="copertinaArticolo"
                   type="text"
                   class="form-control"
+                  placeholder="URL immagine di copertina"
+                  v-model="requestbody.image"
                 />
+                <label for="copertinaArticolo" class="form-label">
+                  URL immagine di copertina
+                </label>
                 <div class="invalid-feedback">Deve essere un URL valido.</div>
               </div>
               <div class="mb-3 mt-4">
@@ -124,14 +129,15 @@
                   </span>
                 </div>
               </div>
-              <div class="mb-3 mt-4">
-                <label for="mittente" class="form-label">Categoria</label>
+              <div class="form-floating mb-3 mt-4">
                 <select
                   id="selectcategoria"
                   class="form-select"
                   aria-label="Seleziona categoria"
+                  v-model="requestbody.tag"
                   required
                 />
+                <label for="selectcategoria" class="form-label">Categoria</label>
               </div>
               <br>
               <p class="mb-1">Su quali piattaforme vorresti pubblicare l'articolo?</p>
@@ -212,24 +218,25 @@
           data-bs-parent="#accordionAggiungi"
         >
           <div class="accordion-body">
-            <div>
-              <label for="mittente" class="form-label">
-                Mittente articolo
-              </label>
+            <div class="form-floating">
               <select
                 id="selectMittenteDel"
                 class="form-select"
                 aria-label="Seleziona mittente"
               />
+              <label for="selectMittenteDel" class="form-label">
+                Autore
+              </label>
             </div>
-            <div class="mt-4">
-              <label for="titoloArticolo" class="form-label">Titolo</label>
+            <div class="form-floating mt-4">
               <input
                 id="titoloArticoloDel"
                 type="text"
                 class="form-control"
+                placeholder="Titolo articolo"
                 required
               />
+              <label for="titoloArticoloDel" class="form-label">Titolo</label>
             </div>
             <div id="loading" class="mt-4 row d-none">
               <div class="spinner-border text-primary mx-auto" role="status">
@@ -321,7 +328,8 @@ export default {
       deletedPageOffset: 0,
       articlecontent: {ita: {}, eng: {}},
       cherryInstance: null,
-      selectedLanguage: 'ita'
+      selectedLanguage: 'ita',
+      requestbody: {}
     };
   },
   mounted() {
@@ -475,19 +483,16 @@ export default {
             validBody = this.cherryInstance.getMarkdown() != "";
 
             // Check if the image url is valid
-            var thumbnail = "",
-              datetime;
+            var datetime;
             if (
-              $("#copertinaArticolo").val() != "" &&
-              !$("#copertinaArticolo")
-                .val()
+              this.requestbody.image != "" &&
+              !this.requestbody.image
                 .match(/^(http|https):\/\/[^ "]+$/)
             ) {
               $("#copertinaArticolo").addClass("is-invalid");
               validImageUrl = false;
             } else {
               $("#copertinaArticolo").removeClass("is-invalid");
-              thumbnail = $("#copertinaArticolo").val();
               validImageUrl = true;
             }
 
@@ -503,8 +508,7 @@ export default {
             this.articlecontent[this.selectedLanguage].subtitle = $("#sottotitoloArticolo").val() || null;
             this.articlecontent[this.selectedLanguage].content = this.cherryInstance.getMarkdown();
 
-            var data = {
-              content: [
+            this.requestbody.content = [
                 {
                   title:  this.articlecontent.ita.title,
                   subtitle: this.articlecontent.ita.subtitle,
@@ -515,38 +519,37 @@ export default {
                   subtitle: this.articlecontent.eng.subtitle,
                   content: this.articlecontent.eng.content,
                 }
-              ],
-              author_id: parseInt($("#selectmittente").val()),
-              tag: $("#selectcategoria").val(),
-              platforms: selectedplats,
-            };
+            ],
+              //author_id: parseInt($("#selectmittente").val()),
+              //tag: $("#selectcategoria").val(),
+            this.requestbody.platforms = selectedplats;           
 
             if (this.articlecontent.eng.title == null) {
-              data.content.pop();
+              this.requestbody.content.pop();
             }
 
             datetime = window.extraorario.dates;
 
             if (datetime != null) {
-              data["target_time"] = datetime.picked[0];
+              this.requestbody.target_time = datetime.picked[0];
             }
 
             if (marker != null) {
-              data["latitude"] = marker.getLatLng().lat;
-              data["longitude"] = marker.getLatLng().lng;
+              this.requestbody.latitude = marker.getLatLng().lat;
+              this.requestbody.longitude = marker.getLatLng().lng;
             }
 
-            if (thumbnail != "") {
-              data["image"] = thumbnail;
+            if (this.requestbody.image == "") {
+              this.requestbody.image = null;
             }
 
             var delayedrelease = window.datetimepickerdelay.dates;
             if (delayedrelease.picked.length > 0) {
-              data["hidden_until"] = delayedrelease.picked[0];
+              this.requestbody.hidden_until = delayedrelease.picked[0];
             }
             
             axios
-              .post(API_BASE_URL + "/articles", data, {
+              .post(API_BASE_URL + "/articles", this.requestbody, {
                 headers: {
                   "Content-Type": "application/json",
                   Authorization:
@@ -727,20 +730,20 @@ export default {
       // If the button clicked is the english one, save the italian content and load the english one
       if (el.id == "btnradioita") {
         this.articlecontent.eng.title = $("#titoloArticolo").val();
-        this.articlecontent.eng.subtitle = $("#sottotitoloArticolo").val();
+        this.articlecontent.eng.subtitle = $("#sottArticolo").val();
         this.articlecontent.eng.content = this.cherryInstance.getMarkdown();
 
         $("#titoloArticolo").val(this.articlecontent.ita.title);
-        $("#sottotitoloArticolo").val(this.articlecontent.ita.subtitle);
+        $("#sottArticolo").val(this.articlecontent.ita.subtitle);
         this.cherryInstance = this.startEditor(this.articlecontent.ita.content || "");
 
       } else {
         this.articlecontent.ita.title = $("#titoloArticolo").val();
-        this.articlecontent.ita.subtitle = $("#sottotitoloArticolo").val();
+        this.articlecontent.ita.subtitle = $("#sottArticolo").val();
         this.articlecontent.ita.content = this.cherryInstance.getMarkdown();
 
         $("#titoloArticolo").val(this.articlecontent.eng.title);
-        $("#sottotitoloArticolo").val(this.articlecontent.eng.subtitle);
+        $("#sottArticolo").val(this.articlecontent.eng.subtitle);
         this.cherryInstance = this.startEditor(this.articlecontent.eng.content || "");
         ///this.startEditor(this.cherryInstance, this.articlecontent.eng.content || "# hello");
       }
