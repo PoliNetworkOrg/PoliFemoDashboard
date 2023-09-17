@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const createRouterInstance = () => {
   return createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [],
+    routes: []
   });
 };
 
@@ -13,5 +13,5 @@ export default {
     const { router = createRouterInstance() } = options.configs;
     modules.forEach((module) => module.install({ router }));
     app.use(router);
-  },
+  }
 };

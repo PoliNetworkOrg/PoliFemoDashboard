@@ -51,7 +51,7 @@ import { faCopy, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 export default {
   components: {
-    LoginButton,
+    LoginButton
   },
   setup() {
     const store = usePolifemoStore();
@@ -60,7 +60,7 @@ export default {
     return {
       loggedIn,
       perms,
-      userid,
+      userid
     };
   },
   methods: {
@@ -77,5 +77,5 @@ export default {
       navigator.clipboard.writeText(this.userid);
     }
   }
-}
+};
 </script>

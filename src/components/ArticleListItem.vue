@@ -3,7 +3,7 @@ import {
   faCalendar,
   faLocationDot,
   faTrashCan,
-  faEye,
+  faEye
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import axios from "axios";
@@ -11,20 +11,20 @@ import { API_BASE_URL } from "@/plugins/AuthUtils";
 defineProps({
   id: {
     type: Number,
-    required: true,
+    required: true
   },
   targettime: {
     type: String,
-    required: false,
+    required: false
   },
   location: {
     type: Boolean,
-    required: false,
+    required: false
   },
   content: {
     type: Object,
-    required: true,
-  },
+    required: true
+  }
 });
 
 library.add(faCalendar, faLocationDot, faTrashCan, faEye);
@@ -41,7 +41,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
           {{ content.it.title || content.en.title }}
         </h5>
         <div class="col text-truncate" v-if="content.it.subtitle">
-          {{ content.it.subtitle}}
+          {{ content.it.subtitle }}
         </div>
         <div class="col text-truncate" v-else>Nessun sottotitolo</div>
       </div>
@@ -114,8 +114,8 @@ export default {
             headers: {
               "Content-Type": "application/json",
               Authorization:
-                "Bearer " + localStorage.getItem("polifemo_access_token"),
-            },
+                "Bearer " + localStorage.getItem("polifemo_access_token")
+            }
           })
           .then(() => {
             this.emitter.emit("article-deleted", this.id);
@@ -137,7 +137,7 @@ export default {
         btn.classList.remove("btn-list-item-action");
         btn.innerHTML = "Sicuro?";
       }
-    },
-  },
+    }
+  }
 };
 </script>

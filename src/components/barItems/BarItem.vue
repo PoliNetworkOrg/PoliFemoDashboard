@@ -3,7 +3,7 @@ import {
   faMoon,
   faSun,
   faNewspaper,
-  faTag,
+  faTag
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 library.add(faMoon, faSun, faNewspaper, faTag);
@@ -11,20 +11,20 @@ library.add(faMoon, faSun, faNewspaper, faTag);
 defineProps({
   dest: {
     type: String,
-    required: true,
+    required: true
   },
   title: {
     type: String,
-    required: true,
+    required: true
   },
   icon: {
     type: String,
-    required: true,
+    required: true
   },
   permission: {
     type: String,
-    required: true,
-  },
+    required: true
+  }
 });
 </script>
 
@@ -64,7 +64,7 @@ export default {
         }
       });
       if (f > 0) return true;
-    },
-  },
+    }
+  }
 };
 </script>

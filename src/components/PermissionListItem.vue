@@ -3,7 +3,7 @@ import {
   faUser,
   faNewspaper,
   faTag,
-  faXmark,
+  faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import axios from "axios";
@@ -14,16 +14,16 @@ import { showToast } from "@/plugins/ToastManager";
 defineProps({
   userid: {
     type: String,
-    required: true,
+    required: true
   },
   objectid: {
     type: Number,
-    required: false,
+    required: false
   },
   grant: {
     type: String,
-    required: true,
-  },
+    required: true
+  }
 });
 
 library.add(faUser, faNewspaper, faTag, faXmark);
@@ -70,7 +70,7 @@ export default {
 
         var data = {
           grant: this.grant,
-          object_id: this.objectid ?? null,
+          object_id: this.objectid ?? null
         };
 
         axios
@@ -78,9 +78,9 @@ export default {
             headers: {
               "Content-Type": "application/json",
               Authorization:
-                "Bearer " + localStorage.getItem("polifemo_access_token"),
+                "Bearer " + localStorage.getItem("polifemo_access_token")
             },
-            data: data,
+            data: data
           })
           .then(() => {
             this.emitter.emit("permission-deleted", data);
@@ -107,7 +107,7 @@ export default {
         btn.classList.remove("btn-list-item-action");
         btn.innerHTML = "Sicuro?";
       }
-    },
-  },
+    }
+  }
 };
 </script>

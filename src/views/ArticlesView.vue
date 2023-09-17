@@ -36,9 +36,7 @@
                   aria-label="Seleziona mittente"
                   v-model="requestbody.author_id"
                 />
-                <label for="selectmittente">
-                  Autore
-                </label>  
+                <label for="selectmittente"> Autore </label>
               </div>
               <br />
               <div
@@ -269,9 +267,7 @@
                 class="form-select"
                 aria-label="Seleziona mittente"
               />
-              <label for="selectMittenteDel" class="form-label">
-                Autore
-              </label>
+              <label for="selectMittenteDel" class="form-label"> Autore </label>
             </div>
             <div class="form-floating mt-4">
               <input
@@ -361,7 +357,7 @@ Marker.prototype.options.icon = icon({
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
-  shadowSize: [41, 41],
+  shadowSize: [41, 41]
 });
 
 export default {
@@ -373,7 +369,7 @@ export default {
       deletedPageOffset: 0,
       articlecontent: { ita: {}, eng: {} },
       cherryInstance: null,
-      selectedLanguage: 'ita',
+      selectedLanguage: "ita",
       requestbody: {}
     };
   },
@@ -421,7 +417,7 @@ export default {
           buttons: {
             clear: true
           }
-        },
+        }
       }
     );
 
@@ -527,8 +523,7 @@ export default {
             var datetime;
             if (
               this.requestbody.image != "" &&
-              !this.requestbody.image
-                .match(/^(http|https):\/\/[^ "]+$/)
+              !this.requestbody.image.match(/^(http|https):\/\/[^ "]+$/)
             ) {
               $("#copertinaArticolo").addClass("is-invalid");
               validImageUrl = false;
@@ -545,25 +540,28 @@ export default {
             $("#submit").attr("disabled", true);
             $("#submit").html("Invio...");
 
-            this.articlecontent[this.selectedLanguage].title = $("#titoloArticolo").val();
-            this.articlecontent[this.selectedLanguage].subtitle = $("#sottotitoloArticolo").val() || null;
-            this.articlecontent[this.selectedLanguage].content = this.cherryInstance.getMarkdown();
+            this.articlecontent[this.selectedLanguage].title =
+              $("#titoloArticolo").val();
+            this.articlecontent[this.selectedLanguage].subtitle =
+              $("#sottotitoloArticolo").val() || null;
+            this.articlecontent[this.selectedLanguage].content =
+              this.cherryInstance.getMarkdown();
 
-            this.requestbody.content = [
-                {
-                  title: this.articlecontent.ita.title,
-                  subtitle: this.articlecontent.ita.subtitle,
-                  content: this.articlecontent.ita.content,
-                },
-                {
-                  title: this.articlecontent.eng.title,
-                  subtitle: this.articlecontent.eng.subtitle,
-                  content: this.articlecontent.eng.content,
-                }
-            ],
+            (this.requestbody.content = [
+              {
+                title: this.articlecontent.ita.title,
+                subtitle: this.articlecontent.ita.subtitle,
+                content: this.articlecontent.ita.content
+              },
+              {
+                title: this.articlecontent.eng.title,
+                subtitle: this.articlecontent.eng.subtitle,
+                content: this.articlecontent.eng.content
+              }
+            ]),
               //author_id: parseInt($("#selectmittente").val()),
               //tag: $("#selectcategoria").val(),
-            this.requestbody.platforms = selectedplats;           
+              (this.requestbody.platforms = selectedplats);
 
             if (this.articlecontent.eng.title == null) {
               this.requestbody.content.pop();
@@ -588,21 +586,21 @@ export default {
             if (delayedrelease.picked.length > 0) {
               this.requestbody.hidden_until = delayedrelease.picked[0];
             }
-            
+
             axios
               .post(API_BASE_URL + "/articles", this.requestbody, {
                 headers: {
                   "Content-Type": "application/json",
                   Authorization:
-                    "Bearer " + localStorage.getItem("polifemo_access_token"),
-                },
+                    "Bearer " + localStorage.getItem("polifemo_access_token")
+                }
               })
               // If the request is successful, show a success toast, close and reset the form
               .then(function (response) {
                 showToast("Articolo creato con successo", "success");
                 var myCollapse = document.getElementById("collapseOne");
                 new bootstrap.Collapse(myCollapse, {
-                  toggle: true,
+                  toggle: true
                 });
                 form.classList.remove("was-validated");
                 loggers.mainLogger.info(
@@ -664,7 +662,7 @@ export default {
           document.getElementById("extramappa").style.height = "400px";
           mappa = L.map("extramappa").setView([45.47812, 9.22818], 18);
           L.tileLayer("https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", {
-            maxZoom: 20,
+            maxZoom: 20
           }).addTo(mappa);
 
           mappa.on("click", function (e) {
@@ -678,8 +676,8 @@ export default {
             document.getElementById("extraorario"),
             {
               display: {
-                theme: store.darkModeEnabled ? "dark" : "light", // Display the correct theme based on the stored preference
-              },
+                theme: store.darkModeEnabled ? "dark" : "light" // Display the correct theme based on the stored preference
+              }
             }
           );
 
@@ -776,8 +774,9 @@ export default {
 
         $("#titoloArticolo").val(this.articlecontent.ita.title);
         $("#sottArticolo").val(this.articlecontent.ita.subtitle);
-        this.cherryInstance = this.startEditor(this.articlecontent.ita.content || "");
-
+        this.cherryInstance = this.startEditor(
+          this.articlecontent.ita.content || ""
+        );
       } else {
         this.articlecontent.ita.title = $("#titoloArticolo").val();
         this.articlecontent.ita.subtitle = $("#sottArticolo").val();
@@ -785,7 +784,9 @@ export default {
 
         $("#titoloArticolo").val(this.articlecontent.eng.title);
         $("#sottArticolo").val(this.articlecontent.eng.subtitle);
-        this.cherryInstance = this.startEditor(this.articlecontent.eng.content || "");
+        this.cherryInstance = this.startEditor(
+          this.articlecontent.eng.content || ""
+        );
         ///this.startEditor(this.cherryInstance, this.articlecontent.eng.content || "# hello");
       }
     },
@@ -796,7 +797,7 @@ export default {
       $(editor).remove();
       //$("#editor-wrapper").empty();
       $("#editor-wrapper").append(
-        "<div id='markdown-editor' class='cherry-editor-height'></div>",
+        "<div id='markdown-editor' class='cherry-editor-height'></div>"
       );
 
       return new Cherry({
@@ -818,7 +819,7 @@ export default {
             "checklist",
             "list",
             "link",
-            "table",
+            "table"
           ],
           bubble: [
             "bold",
@@ -827,13 +828,13 @@ export default {
             "strikethrough",
             "sub",
             "sup",
-            "quote",
+            "quote"
           ],
           float: []
         },
-        locale: 'en_US'
+        locale: "en_US"
       });
     }
-  },
+  }
 };
 </script>

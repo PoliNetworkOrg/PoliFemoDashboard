@@ -159,8 +159,8 @@ export default {
     hasPermission: function (permission) {
       const store = usePolifemoStore();
       return store.perms.includes(permission);
-    },
-  },
+    }
+  }
 };
 </script>
 

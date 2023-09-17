@@ -13,6 +13,6 @@ export default {
         "color: #f50000; font-weight: bold",
         message
       );
-    },
-  },
+    }
+  }
 };

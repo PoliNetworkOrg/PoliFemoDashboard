@@ -2,17 +2,17 @@
 defineProps({
   loginDestination: {
     type: String,
-    required: true,
+    required: true
   },
   loginText: {
     type: String,
-    required: true,
+    required: true
   },
   buttonType: {
     type: String,
     required: false,
-    default: "primary",
-  },
+    default: "primary"
+  }
 });
 </script>
 
@@ -90,7 +90,7 @@ export default {
           );
           break;
       }
-    },
-  },
+    }
+  }
 };
 </script>

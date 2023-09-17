@@ -95,7 +95,7 @@
 import {
   faCircleInfo,
   faUser,
-  faPlus,
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import loggers from "@/plugins/ConsoleLoggers";
@@ -137,7 +137,7 @@ export default {
     this.emitter.on("permission-deleted", (removed) => {
       this.tempPermList = this.tempPermList.filter(
         (perm) =>
-          perm.grant !== removed.grant && perm.object_id !== removed.object_id,
+          perm.grant !== removed.grant && perm.object_id !== removed.object_id
       );
     });
   },
@@ -151,7 +151,7 @@ export default {
           {
             headers: {
               Authorization:
-                "Bearer " + localStorage.getItem("polifemo_access_token"),
+                "Bearer " + localStorage.getItem("polifemo_access_token")
             }
           }
         )
@@ -171,11 +171,11 @@ export default {
     addPermission() {
       //place spinner inside button
       $("#addpermbutton").html(
-        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>',
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
       );
       const perm = $("#added-perm").val();
       var data = {
-        grant: perm,
+        grant: perm
       };
       if (this.autofill.hasOwnProperty(perm)) {
         var index = 0;
@@ -194,8 +194,8 @@ export default {
           {
             headers: {
               Authorization:
-                "Bearer " + localStorage.getItem("polifemo_access_token"),
-            },
+                "Bearer " + localStorage.getItem("polifemo_access_token")
+            }
           }
         )
         .then((response) => {
@@ -211,7 +211,7 @@ export default {
         .finally(() => {
           $("#addpermbutton").html('<i class="fas fa-plus"></i>');
         });
-    },
-  },
+    }
+  }
 };
 </script>

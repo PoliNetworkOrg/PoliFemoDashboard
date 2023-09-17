@@ -9,8 +9,8 @@ export const refreshAuthLogic = async (failedRequest) => {
   loggers.mainLogger.info("Auth", "Invalid token, refreshing...");
   const tokenRefreshResponse = await axios.get(API_BASE_URL + "/auth/refresh", {
     headers: {
-      Token: localStorage.getItem("polifemo_refresh_token"),
-    },
+      Token: localStorage.getItem("polifemo_refresh_token")
+    }
   });
   if (tokenRefreshResponse.status == 200) {
     loggers.mainLogger.info("Auth", "Token refreshed successfully");
@@ -41,8 +41,8 @@ export const refreshPermissions = async (skipRequest) =>
       .get(API_BASE_URL + "/accounts/me", {
         headers: {
           Authorization:
-            "Bearer " + localStorage.getItem("polifemo_access_token"),
-        },
+            "Bearer " + localStorage.getItem("polifemo_access_token")
+        }
       })
       .then((response) => {
         store.userid = response.data.id;

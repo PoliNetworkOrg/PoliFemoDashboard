@@ -13,7 +13,7 @@ export default {
   computed: {
     darkMode: function () {
       return localStorage.getItem("bs.prefers-color-scheme") === "dark";
-    },
+    }
   },
 
   mounted() {
@@ -37,7 +37,7 @@ export default {
         document.getElementById("darkmode-icon").classList.remove("fa-sun");
         document.getElementById("darkmode-icon").classList.add("fa-moon");
       }
-    },
-  },
+    }
+  }
 };
 </script>
