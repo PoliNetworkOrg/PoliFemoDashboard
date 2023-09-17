@@ -166,7 +166,9 @@
                   v-model="requestbody.tag"
                   required
                 />
-                <label for="selectcategoria" class="form-label">Categoria</label>
+                <label for="selectcategoria" class="form-label">
+                  Categoria
+                </label>
               </div>
               <br />
               <p class="mb-1">
