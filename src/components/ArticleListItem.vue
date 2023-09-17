@@ -71,7 +71,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
 </template>
 
 <script>
-import Cherry from 'cherry-markdown/dist/cherry-markdown.core';
+import Cherry from "cherry-markdown/dist/cherry-markdown.core";
 export default {
   data() {
     return {

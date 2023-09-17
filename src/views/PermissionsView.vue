@@ -14,7 +14,7 @@
     <div
       class="alert alert-danger"
       role="alert"
-      v-if="filled.userid == this.userid"
+      v-if="filled.userid == this.store.userid"
     >
       <h4 class="alert-heading">Attenzione!</h4>
       <span
@@ -58,9 +58,10 @@
           :key="perm.id"
           :objectid="perm.object_id"
           :grant="perm.grant"
-          :userid="userid"
+          :userid="filled.userid"
         ></PermissionListItem>
-        <div class="input-group mt-3 d-none" id="new-perm-form">
+        <div class="mt-3" v-if="tempPermList.length != 0"></div>
+        <div class="input-group d-none" id="new-perm-form">
           <input
             id="added-perm"
             type="text"
@@ -112,15 +113,13 @@ export default {
   data() {
     return {
       tempPermList: {},
-      userid: "",
       autofill: {},
       filled: {},
+      store: usePolifemoStore()
     };
   },
   mounted() {
     this.autofill = autofill;
-    const store = usePolifemoStore();
-    this.userid = store.userid;
 
     // If the user lands on this page without a valid permission store, check for permissions once
     // the permissions-loaded event is received
@@ -138,27 +137,30 @@ export default {
     this.emitter.on("permission-deleted", (removed) => {
       this.tempPermList = this.tempPermList.filter(
         (perm) =>
-          perm.grant !== removed.grant && perm.object_id !== removed.object_id
+          perm.grant !== removed.grant && perm.object_id !== removed.object_id,
       );
     });
   },
 
   methods: {
     getPermissionsOfUser() {
-      this.userid = $("#user-selected").val();
       $("#permissions-loading").removeClass("d-none");
       axios
-        .get(API_BASE_URL + "/accounts/" + this.userid + "/permissions", {
-          headers: {
-            Authorization:
-              "Bearer " + localStorage.getItem("polifemo_access_token"),
-          },
-        })
+        .get(
+          API_BASE_URL + "/accounts/" + this.filled.userid + "/permissions",
+          {
+            headers: {
+              Authorization:
+                "Bearer " + localStorage.getItem("polifemo_access_token"),
+            }
+          }
+        )
         .then((response) => {
           this.tempPermList = response.data.permissions;
         })
         .catch((error) => {
           loggers.mainLogger.error("permissions", error);
+          this.tempPermList = [];
         })
         .finally(() => {
           $("#permissions-loading").addClass("d-none");
@@ -169,7 +171,7 @@ export default {
     addPermission() {
       //place spinner inside button
       $("#addpermbutton").html(
-        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>',
       );
       const perm = $("#added-perm").val();
       var data = {
@@ -187,7 +189,7 @@ export default {
       }
       axios
         .post(
-          API_BASE_URL + "/accounts/" + this.userid + "/permissions",
+          API_BASE_URL + "/accounts/" + this.filled.userid + "/permissions",
           data,
           {
             headers: {

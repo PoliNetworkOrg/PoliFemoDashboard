@@ -30,7 +30,11 @@ const { loggedIn } = storeToRefs(store);
     class="navbar navbar-expand-md navbar-dark bg-dark sticky-top"
   >
     <RouterLink to="/" class="navbar-title">
-      <a class="navbar-brand ms-3">PoliFemo Dashboard</a>
+      <img
+        class="mb-1 ms-2 small-logo"
+        src="https://polinetwork.org/img/polinetwork.png"
+      />
+      <a class="navbar-brand ms-2">PoliFemo Dashboard</a>
     </RouterLink>
     <button
       class="navbar-toggler"

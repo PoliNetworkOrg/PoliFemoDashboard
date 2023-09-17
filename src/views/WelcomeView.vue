@@ -21,8 +21,19 @@
       <p class="lead">
         Seleziona una delle categorie e scegli l'operazione da eseguire.
       </p>
-      <br>
-      <p class="text-secondary" v-if="perms.length!=0">ID: <a :click="copyId()" alt="Copia" class="nosub text-reset dotted-underline" href="#">{{ userid }}</a> <i id="copybtn" class="fa fa-sm fa-copy"></i></p>
+      <br />
+      <p class="text-secondary">
+        ID:
+        <a
+          @click="copyId()"
+          alt="Copia"
+          class="nosub text-reset dotted-underline"
+          href="#"
+        >
+          {{ userid }}
+        </a>
+        <i id="copybtn" class="fa fa-sm fa-copy"></i>
+      </p>
     </div>
   </div>
 </template>
@@ -41,7 +52,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 export default {
   components: {
     LoginButton,
-  }, 
+  },
   setup() {
     const store = usePolifemoStore();
     const { loggedIn, perms, userid } = storeToRefs(store);

@@ -40,13 +40,40 @@
                   Autore
                 </label>  
               </div>
-              <br>
-              <div class="btn-group" role="group" aria-label="Language toggle button group">
-                <input type="radio" v-model="selectedLanguage" v-on:click="saveAndLoadArticleContent($event.target)" class="btn-check rounded-pill" value="ita" name="btnradio" id="btnradioita" autocomplete="off" checked>
-                <label class="btn btn-outline-primary" for="btnradioita">ITA</label>
+              <br />
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Language toggle button group"
+              >
+                <input
+                  type="radio"
+                  v-model="selectedLanguage"
+                  v-on:click="saveAndLoadArticleContent($event.target)"
+                  class="btn-check rounded-pill"
+                  value="ita"
+                  name="btnradio"
+                  id="btnradioita"
+                  autocomplete="off"
+                  checked
+                />
+                <label class="btn btn-outline-primary" for="btnradioita"
+                  >ITA</label
+                >
 
-                <input type="radio" v-model="selectedLanguage" v-on:click="saveAndLoadArticleContent($event.target)" class="btn-check rounded-end" value="eng" name="btnradio" id="btnradioeng" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradioeng">ENG</label>
+                <input
+                  type="radio"
+                  v-model="selectedLanguage"
+                  v-on:click="saveAndLoadArticleContent($event.target)"
+                  class="btn-check rounded-end"
+                  value="eng"
+                  name="btnradio"
+                  id="btnradioeng"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-primary" for="btnradioeng"
+                  >ENG</label
+                >
               </div>
               <div class="form-floating mb-3 mt-4">
                 <input
@@ -72,7 +99,11 @@
                   Sottotitolo
                 </label>
               </div>
-              <p><a href="https://www.markdownguide.org/cheat-sheet/">Guida al Markdown</a></p>
+              <p>
+                <a href="https://www.markdownguide.org/cheat-sheet/"
+                  >Guida al Markdown</a
+                >
+              </p>
               <div id="editor-wrapper" class="mb-3 mt-3">
                 <div id="markdown-editor" class="cherry-editor-height" />
               </div>
@@ -139,31 +170,39 @@
                 />
                 <label for="selectcategoria" class="form-label">Categoria</label>
               </div>
-              <br>
-              <p class="mb-1">Su quali piattaforme vorresti pubblicare l'articolo?</p>
+              <br />
+              <p class="mb-1">
+                Su quali piattaforme vorresti pubblicare l'articolo?
+              </p>
               <div id="extraplat" class="form-check">
                 <input
-                    id="plat-app"
-                    class="form-check-input"
-                    type="checkbox"
-                    value="1"
-                  />
-                  <label class="form-check-label ms-2" for="plat-app">
-                    PoliFemo
-                  </label>
-                <br>
+                  id="plat-app"
+                  class="form-check-input"
+                  type="checkbox"
+                  value="1"
+                />
+                <label class="form-check-label ms-2" for="plat-app">
+                  PoliFemo
+                </label>
+                <br />
                 <input
-                    id="plat-tg"
-                    class="form-check-input"
-                    type="checkbox"
-                    value="2"
-                  />
-                  <label class="form-check-label ms-2" for="plat-tg">
-                    Telegram
-                  </label>
-                <div class="invalid-feedback">Devi selezionare almeno una piattaforma.</div>
+                  id="plat-tg"
+                  class="form-check-input"
+                  type="checkbox"
+                  value="2"
+                />
+                <label class="form-check-label ms-2" for="plat-tg">
+                  Telegram (<a
+                    href="https://t.me/poliassociazioni"
+                    target="_blank"
+                    >PoliAssociazioni</a
+                  >)
+                </label>
+                <div class="invalid-feedback">
+                  Devi selezionare almeno una piattaforma.
+                </div>
               </div>
-              <br>
+              <br />
               <div>
                 <div
                   id="datetimepickerdelay"
@@ -172,7 +211,9 @@
                   style="width: 200px"
                   data-td-target-toggle="nearest"
                 >
-                  <label class="mb-1" for="datetimepickerdelay">Pubblicazione programmata</label>
+                  <label class="mb-1" for="datetimepickerdelay"
+                    >Pubblicazione programmata</label
+                  >
                   <input
                     id="datetimepicker2Input"
                     type="text"
@@ -189,7 +230,11 @@
                 </div>
               </div>
               <div class="mt-4">
-                <button id="submit" type="submit" class="btn btn-primary rounded">
+                <button
+                  id="submit"
+                  type="submit"
+                  class="btn btn-primary rounded"
+                >
                   Invia
                 </button>
               </div>
@@ -293,7 +338,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet/dist/leaflet-src.js";
 import loggers from "@/plugins/ConsoleLoggers";
 import axios from "axios";
-import Cherry from 'cherry-markdown/dist/cherry-markdown.core';
+import Cherry from "cherry-markdown/dist/cherry-markdown.core";
 import { API_BASE_URL, checkPagePermission } from "@/plugins/AuthUtils";
 import { showToast } from "@/plugins/ToastManager";
 import ArticleListItem from "@/components/ArticleListItem.vue";
@@ -326,7 +371,7 @@ export default {
       articles: [],
       canLoadMore: true,
       deletedPageOffset: 0,
-      articlecontent: {ita: {}, eng: {}},
+      articlecontent: { ita: {}, eng: {} },
       cherryInstance: null,
       selectedLanguage: 'ita',
       requestbody: {}
@@ -342,14 +387,11 @@ export default {
     this.cherryInstance = this.startEditor();
 
     if (store.darkModeEnabled) {
-      this.cherryInstance.setTheme('dark');
+      this.cherryInstance.setTheme("dark");
     }
-
 
     // First accordion (add articles)
     $("#accordionAggiungi").on("show.bs.collapse", function () {
-      
-
       // Fill the authors select
       var array = JSON.parse(JSON.stringify(store.perms));
       var authors = JSON.parse(JSON.stringify(store.authorizedauthors));
@@ -386,6 +428,7 @@ export default {
     // Second accordion (remove articles)
     $("#collapseTwo").on("show.bs.collapse", () => {
       idau = 0;
+      this.articles = [];
       $("#selectMittenteDel").empty();
       // Fill the authors select
       var array = JSON.parse(JSON.stringify(store.perms));
@@ -433,8 +476,7 @@ export default {
         loggers.mainLogger.error("articoli", error);
       });
 
-
-    $('#datetimepickerdelay').on('change.td', () => this.isDelayed = true);
+    $("#datetimepickerdelay").on("change.td", () => (this.isDelayed = true));
 
     // INSERTION FORM: On submission, check for field requirements and perform additional check on the image url field
     const forms = document.querySelectorAll("#articolo");
@@ -451,14 +493,13 @@ export default {
             event.stopPropagation();
 
             // Generate the number from the selected platforms
-            var selectedplats = 0
-            var allchecks = []
+            var selectedplats = 0;
+            var allchecks = [];
             $("#extraplat input").each(function () {
               allchecks.push(this);
               if (this.checked) {
                 selectedplats += parseInt(this.value);
               }
-
             });
 
             // Additional checks
@@ -468,12 +509,12 @@ export default {
 
             // Check if at least one platform is selected
             if (selectedplats == 0) {
-              allchecks.forEach(element => {
+              allchecks.forEach((element) => {
                 $(element).addClass("is-invalid");
               });
               validPlat = false;
             } else {
-              allchecks.forEach(element => {
+              allchecks.forEach((element) => {
                 $(element).removeClass("is-invalid");
               });
               validPlat = true;
@@ -510,12 +551,12 @@ export default {
 
             this.requestbody.content = [
                 {
-                  title:  this.articlecontent.ita.title,
+                  title: this.articlecontent.ita.title,
                   subtitle: this.articlecontent.ita.subtitle,
                   content: this.articlecontent.ita.content,
                 },
                 {
-                  title:  this.articlecontent.eng.title,
+                  title: this.articlecontent.eng.title,
                   subtitle: this.articlecontent.eng.subtitle,
                   content: this.articlecontent.eng.content,
                 }
@@ -754,30 +795,40 @@ export default {
       var editor = $("#editor-wrapper").children()[0];
       $(editor).remove();
       //$("#editor-wrapper").empty();
-      $("#editor-wrapper").append("<div id='markdown-editor' class='cherry-editor-height'></div>");
-      
+      $("#editor-wrapper").append(
+        "<div id='markdown-editor' class='cherry-editor-height'></div>",
+      );
+
       return new Cherry({
-        id: 'markdown-editor',
-        value: value || '',
+        id: "markdown-editor",
+        value: value || "",
         toolbars: {
           showToolbar: true,
           toolbar: [
-            'bold',
-            'italic',
-            'strikethrough',
-            'underline',
-            'sub',
-            'sup',
-            'quote',
-            '|',
-            'size',
-            '|',
-            'checklist',
-            'list',
-            'link',
-            'table'
+            "bold",
+            "italic",
+            "strikethrough",
+            "underline",
+            "sub",
+            "sup",
+            "quote",
+            "|",
+            "size",
+            "|",
+            "checklist",
+            "list",
+            "link",
+            "table",
           ],
-          bubble: ['bold', 'italic', 'underline', 'strikethrough', 'sub', 'sup', 'quote'],
+          bubble: [
+            "bold",
+            "italic",
+            "underline",
+            "strikethrough",
+            "sub",
+            "sup",
+            "quote",
+          ],
           float: []
         },
         locale: 'en_US'
