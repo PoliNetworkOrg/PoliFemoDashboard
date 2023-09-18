@@ -35,9 +35,9 @@ library.add(faUser, faNewspaper, faTag, faXmark);
       <div class="col-8">
         <h5 class="col ms-2 mt-1 text-truncate">
           <i class="fas fa-user"></i>
-          <span v-if="!objectid">&nbsp; {{ grant }}</span>
+          <span v-if="!objectid">&nbsp;{{ grant }}</span>
           <span v-else>
-            &nbsp; {{ grant }} &bull; {{ autofill[grant][objectid] }}
+            &nbsp;{{ grant }} &bull; {{ autofill[grant][objectid] }}
           </span>
         </h5>
       </div>

@@ -24,6 +24,10 @@ defineProps({
   content: {
     type: Object,
     required: true
+  },
+  buttons: {
+    type: String,
+    required: true
   }
 });
 
@@ -51,6 +55,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
             type="button"
             id="btn-preview"
             v-on:click="preview"
+            v-if="displayedButtons.includes('preview')"
             class="btn no-border btn-info rounded-start h-100 btn-list-item-action"
           >
             <i class="fas fa-eye"></i>
@@ -59,6 +64,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
             type="button"
             v-on:click="remove"
             id="btn-delete"
+            v-if="displayedButtons.includes('delete')"
             class="btn no-border btn-danger rounded-end h-100 btn-list-item-action"
           >
             <i class="fas fa-trash-can"></i>
@@ -76,7 +82,8 @@ export default {
   data() {
     return {
       cherryEditor: null,
-      previewBox: null
+      previewBox: null,
+      displayedButtons: this.buttons.split(",") || []
     };
   },
   mounted() {
