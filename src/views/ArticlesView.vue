@@ -570,7 +570,6 @@ export default {
       }
     });
 
-
     // Initialize extra libraries (leaflet, tempusdominus).
     // Only needed if the article needs "extra" fields (location and/or date)
     document

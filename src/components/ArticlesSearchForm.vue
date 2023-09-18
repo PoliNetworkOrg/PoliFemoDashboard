@@ -80,33 +80,19 @@ export default {
       deletedPageOffset: 0,
       isLoading: false,
       idau: 0,
+      store: usePolifemoStore()
     };
   },
   mounted() {
-    const store = usePolifemoStore();
-
+    this.fillAuthorOptions();
     // If an article is deleted, remove it from the list
     this.emitter.on("article-deleted", (id) => {
-        this.articles = this.articles.filter((article) => article.id != id);
+      this.articles = this.articles.filter((article) => article.id != id);
     });
 
     // Wait for the permissions to load before adding the authors to the select
     this.emitter.on("permissions-refreshed", () => {
-      var array = JSON.parse(JSON.stringify(store.perms));
-      var authors = JSON.parse(JSON.stringify(store.authorizedauthors));
-      $("#selectMittente").append('<option value=""></option>');
-      array.forEach((perm) => {
-        if (perm.grant == "authors") {
-          $("#selectMittente").append(
-            '<option value="' +
-              perm["object_id"] +
-              '">' +
-              authors[this.idau] +
-              "</option>"
-          );
-          this.idau++;
-        }
-      });
+      this.fillAuthorOptions();
     });
   },
   methods: {
@@ -173,6 +159,23 @@ export default {
           this.isLoading = false;
         });
       return;
+    },
+    fillAuthorOptions() {
+      var array = JSON.parse(JSON.stringify(this.store.perms));
+      var authors = JSON.parse(JSON.stringify(this.store.authorizedauthors));
+      $("#selectMittente").append('<option value=""></option>');
+      array.forEach((perm) => {
+        if (perm.grant == "authors") {
+          $("#selectMittente").append(
+            '<option value="' +
+              perm["object_id"] +
+              '">' +
+              authors[this.idau] +
+              "</option>"
+          );
+          this.idau++;
+        }
+      });
     }
   }
 };
