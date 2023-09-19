@@ -1,8 +1,20 @@
+<script setup>
+defineProps({
+  buttons: {
+    type: String,
+    default: "preview,delete"
+  },
+  occurrence: {
+    type: Number,
+    required: true
+  }
+});
+</script>
 <template>
   <div class="mt-3 ms-3 me-3">
     <div class="form-floating">
       <select
-        id="selectMittente"
+        ref="selectMittente"
         class="form-select"
         aria-label="Seleziona mittente"
         v-model="author_id"
@@ -35,7 +47,8 @@
         v-bind:targettime="item.target_time"
         v-bind:location="item.latitude != null"
         v-bind:id="item.id || 0"
-        buttons="preview,delete"
+        :buttons="buttons"
+        :formoccurrence="occurrence"
       ></ArticleListItem>
       <div v-if="articles.length != 0 && canLoadMore" class="mt-4 row">
         <div class="text-primary mx-auto col-auto" role="status">
@@ -161,12 +174,13 @@ export default {
       return;
     },
     fillAuthorOptions() {
+      this.$refs.selectMittente.innerHTML = "";
       var array = JSON.parse(JSON.stringify(this.store.perms));
       var authors = JSON.parse(JSON.stringify(this.store.authorizedauthors));
-      $("#selectMittente").append('<option value=""></option>');
+      this.$refs.selectMittente.innerHTML = "<option value=''></option>";
       array.forEach((perm) => {
         if (perm.grant == "authors") {
-          $("#selectMittente").append(
+          this.$refs.selectMittente.innerHTML += (
             '<option value="' +
               perm["object_id"] +
               '">' +

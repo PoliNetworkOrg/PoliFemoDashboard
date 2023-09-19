@@ -28,6 +28,10 @@ defineProps({
   buttons: {
     type: String,
     required: true
+  },
+  formoccurrence: {
+    type: Number,
+    required: true
   }
 });
 
@@ -72,7 +76,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
         </div>
       </div>
     </div>
-    <div :id="'preview-box-' + id" class="mt-2 border rounded d-none"></div>
+    <div :id="'preview-box-' + id + '-' + formoccurrence" class="mt-2 border rounded d-none"></div>
   </div>
 </template>
 
@@ -87,17 +91,17 @@ export default {
     };
   },
   mounted() {
-    this.previewBox = this.$el.querySelector("#preview-box-" + this.id);
+    this.previewBox = this.$el.querySelector("#preview-box-" + this.id + "-" + this.formoccurrence);
   },
   methods: {
     preview() {
-      if (this.cherryEditor && $(this.previewbox).hasClass("d-none")) {
-        $(previewbox).removeClass("d-none");
+      if (this.cherryEditor && $(this.previewBox).hasClass("d-none")) {
+        $(this.previewBox).removeClass("d-none");
       } else if (this.cherryEditor && !$(this.previewBox).hasClass("d-none")) {
         $(this.previewBox).addClass("d-none");
       } else {
         this.cherryEditor = new Cherry({
-          id: "preview-box-" + this.id, // Need this trick to avoid a bug always creating the editor in the first element of the list
+          id: "preview-box-" + this.id + "-" + this.formoccurrence, // Need this trick to avoid a bug always creating the editor in the first element of the list
           value: this.content.it.content || this.content.en.content,
           locale: "en_US",
           editor: {
@@ -143,7 +147,16 @@ export default {
         btn.classList.add("pending");
         btn.classList.remove("btn-list-item-action");
         btn.innerHTML = "Sicuro?";
+        setTimeout(() => {
+          this.stopPendingDeletion();
+        }, 5000);
       }
+    },
+    stopPendingDeletion() {
+      var btn = this.$el.querySelector("#btn-delete");
+      btn.classList.remove("pending");
+      btn.classList.add("btn-list-item-action");
+      btn.innerHTML = '<i class="fas fa-trash-can"></i>';
     }
   }
 };

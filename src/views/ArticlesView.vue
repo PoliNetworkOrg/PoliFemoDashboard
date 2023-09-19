@@ -262,8 +262,12 @@
           aria-labelledby="headingTwo"
           data-bs-parent="#accordionAggiungi"
         >
-          <ArticlesSearchForm />
+          <ArticlesSearchForm :occurrence="0"/>
         </div>
+      </div>
+      <div>
+        <h2 class="mt-5">Cerca un articolo</h2>
+        <ArticlesSearchForm buttons="preview" :occurrence="1"/>
       </div>
       <div class="container spacer"></div>
     </div>
