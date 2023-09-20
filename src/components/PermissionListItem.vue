@@ -35,7 +35,7 @@ library.add(faUser, faNewspaper, faTag, faXmark);
       <div class="col-8">
         <h5 class="col ms-2 mt-1 text-truncate">
           <i class="fas fa-user"></i>
-          <span v-if="!objectid">&nbsp;{{ grant }}</span>
+          <span v-if="!objectid">&nbsp; {{ grant }}</span>
           <span v-else>
             &nbsp;{{ grant }} &bull; {{ autofill[grant][objectid] }}
           </span>
@@ -106,7 +106,16 @@ export default {
         btn.classList.add("pending");
         btn.classList.remove("btn-list-item-action");
         btn.innerHTML = "Sicuro?";
+        setTimeout(() => {
+          this.stopPendingDeletion();
+        }, 5000);
       }
+    },
+    stopPendingDeletion() {
+      var btn = this.$el.querySelector("#btn-remove");
+      btn.classList.remove("pending");
+      btn.classList.add("btn-list-item-action");
+      btn.innerHTML = '<i class="fas fa-xmark"></i>';
     }
   }
 };
