@@ -299,6 +299,7 @@ import axios from "axios";
 import Cherry from "cherry-markdown/dist/cherry-markdown.core";
 import { API_BASE_URL, checkPagePermission } from "@/plugins/AuthUtils";
 import { showToast } from "@/plugins/ToastManager";
+import { getString } from "@/plugins/Translations.js"
 import ArticlesSearchForm from "@/components/ArticlesSearchForm.vue";
 
 library.add(
@@ -388,10 +389,8 @@ export default {
       .get(API_BASE_URL + "/tags")
       .then((response) => {
         response.data.tags.forEach((cat) => {
-          var catname =
-            cat.name.charAt(0).toUpperCase() + cat.name.slice(1).toLowerCase();
           $("#selectcategoria").append(
-            '<option value="' + cat.name + '">' + catname + "</option>"
+            '<option value="' + cat.name + '">' + getString(cat.name) + "</option>"
           );
         });
       })

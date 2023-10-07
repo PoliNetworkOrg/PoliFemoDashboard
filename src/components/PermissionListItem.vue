@@ -33,7 +33,7 @@ library.add(faUser, faNewspaper, faTag, faXmark);
   <div class="border rounded">
     <div class="row">
       <div class="col-8">
-        <h5 class="col ms-2 mt-1 text-truncate">
+        <h5 class="col ms-2 mt-1 text-truncate" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="a">
           <i class="fas fa-user"></i>
           <span v-if="!objectid">&nbsp; {{ grant }}</span>
           <span v-else>
@@ -58,7 +58,15 @@ library.add(faUser, faNewspaper, faTag, faXmark);
 </template>
 
 <script>
+import { getString } from "@/plugins/Translations.js"
 export default {
+  mounted() {
+    var h5 = this.$el.querySelector("h5");
+    console.log(autofill[this.grant] ? autofill[this.grant][this.objectid] : null)
+    h5.setAttribute("data-bs-title", getString("permission_" + this.grant, autofill[this.grant] ? autofill[this.grant][this.objectid] : null));
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  },
   methods: {
     remove() {
       var btn = this.$el.querySelector("#btn-remove");

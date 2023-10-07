@@ -19,10 +19,6 @@ const { loggedIn } = storeToRefs(store);
   <header>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-dark-5@1.1.3/dist/css/bootstrap-nightshade.min.css"
-    />
   </header>
 
   <nav

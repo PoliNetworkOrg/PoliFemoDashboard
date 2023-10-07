@@ -40,7 +40,7 @@
 
 <style>
 @import "@/assets/styles/main.css";
-@import "@/assets/styles/bootstrap-nightshade.min.css";
+@import "@/assets/styles/bootstrap.min.css";
 </style>
 
 <script>

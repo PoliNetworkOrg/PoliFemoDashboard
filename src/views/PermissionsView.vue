@@ -144,6 +144,7 @@ export default {
 
   methods: {
     getPermissionsOfUser() {
+      this.tempPermList = [];
       $("#permissions-loading").removeClass("d-none");
       axios
         .get(
