@@ -8,7 +8,7 @@
     "format": "npx prettier --write ."
   },
   "dependencies": {
-    "@eonasdan/tempus-dominus": "^6.7.13",
+    "@eonasdan/tempus-dominus": "^6.7.16",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@vitejs/plugin-vue": "^3.2.0",
