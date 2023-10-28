@@ -50,7 +50,7 @@ defineProps({
         :buttons="buttons"
         :formoccurrence="occurrence"
       ></ArticleListItem>
-      <div v-if="articles.length != 0 && canLoadMore" class="mt-4 row">
+      <div v-if="this.articles.length != 0 && canLoadMore" class="mt-4 row">
         <div class="text-primary mx-auto col-auto" role="status">
           <a
             id="loadMore"
