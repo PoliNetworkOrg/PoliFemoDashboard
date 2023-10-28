@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: WelcomeView,
+      component: WelcomeView
     },
     {
       path: "/articoli",
@@ -14,14 +14,14 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import("@/views/ArticlesView.vue"),
+      component: () => import("@/views/ArticlesView.vue")
     },
     {
       path: "/permessi",
       name: "permessi",
-      component: () => import("@/views/PermissionsView.vue"),
-    },
-  ],
+      component: () => import("@/views/PermissionsView.vue")
+    }
+  ]
 });
 
 const validRoutes = ["/", "/articoli", "/permessi"];

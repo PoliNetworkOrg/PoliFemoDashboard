@@ -3,7 +3,7 @@ import {
   faUser,
   faNewspaper,
   faTag,
-  faXmark,
+  faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import axios from "axios";
@@ -14,16 +14,16 @@ import { showToast } from "@/plugins/ToastManager";
 defineProps({
   userid: {
     type: String,
-    required: true,
+    required: true
   },
   objectid: {
     type: Number,
-    required: false,
+    required: false
   },
   grant: {
     type: String,
-    required: true,
-  },
+    required: true
+  }
 });
 
 library.add(faUser, faNewspaper, faTag, faXmark);
@@ -33,11 +33,11 @@ library.add(faUser, faNewspaper, faTag, faXmark);
   <div class="border rounded">
     <div class="row">
       <div class="col-8">
-        <h5 class="col ms-2 mt-1 text-truncate">
+        <h5 class="col ms-2 mt-1 text-truncate" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="a">
           <i class="fas fa-user"></i>
           <span v-if="!objectid">&nbsp; {{ grant }}</span>
           <span v-else>
-            &nbsp; {{ grant }} &bull; {{ autofill[grant][objectid] }}
+            &nbsp;{{ grant }} &bull; {{ autofill[grant][objectid] }}
           </span>
         </h5>
       </div>
@@ -58,7 +58,15 @@ library.add(faUser, faNewspaper, faTag, faXmark);
 </template>
 
 <script>
+import { getString } from "@/plugins/Translations.js"
 export default {
+  mounted() {
+    var h5 = this.$el.querySelector("h5");
+    console.log(autofill[this.grant] ? autofill[this.grant][this.objectid] : null)
+    h5.setAttribute("data-bs-title", getString("permission_" + this.grant, autofill[this.grant] ? autofill[this.grant][this.objectid] : null));
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  },
   methods: {
     remove() {
       var btn = this.$el.querySelector("#btn-remove");
@@ -70,7 +78,7 @@ export default {
 
         var data = {
           grant: this.grant,
-          object_id: this.objectid ?? null,
+          object_id: this.objectid ?? null
         };
 
         axios
@@ -78,9 +86,9 @@ export default {
             headers: {
               "Content-Type": "application/json",
               Authorization:
-                "Bearer " + localStorage.getItem("polifemo_access_token"),
+                "Bearer " + localStorage.getItem("polifemo_access_token")
             },
-            data: data,
+            data: data
           })
           .then(() => {
             this.emitter.emit("permission-deleted", data);
@@ -106,8 +114,17 @@ export default {
         btn.classList.add("pending");
         btn.classList.remove("btn-list-item-action");
         btn.innerHTML = "Sicuro?";
+        setTimeout(() => {
+          this.stopPendingDeletion();
+        }, 5000);
       }
     },
-  },
+    stopPendingDeletion() {
+      var btn = this.$el.querySelector("#btn-remove");
+      btn.classList.remove("pending");
+      btn.classList.add("btn-list-item-action");
+      btn.innerHTML = '<i class="fas fa-xmark"></i>';
+    }
+  }
 };
 </script>

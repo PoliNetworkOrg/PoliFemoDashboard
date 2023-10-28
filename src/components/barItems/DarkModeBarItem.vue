@@ -10,27 +10,35 @@
 import { usePolifemoStore } from "@/stores/polifemo";
 
 export default {
+  data() {
+    return {
+      store: usePolifemoStore()
+    };
+  },
   computed: {
     darkMode: function () {
       return localStorage.getItem("bs.prefers-color-scheme") === "dark";
-    },
+    }
   },
 
   mounted() {
     this.updateIcon(this.darkMode);
+    this.loadDarkModePreference();
   },
 
   methods: {
     toggleDarkMode() {
-      const store = usePolifemoStore();
-      darkmode.toggleDarkMode();
-      store.darkModeEnabled = !store.darkModeEnabled;
+      this.store.darkModeEnabled = !this.store.darkModeEnabled;
+      localStorage.setItem(
+        "bs.prefers-color-scheme",
+        this.store.darkModeEnabled ? "dark" : "light"
+      );
       this.updateIcon();
+      this.applyDarkModePreference();
     },
 
     updateIcon(force) {
-      const store = usePolifemoStore();
-      if (store.darkModeEnabled || force) {
+      if (this.store.darkModeEnabled || force) {
         document.getElementById("darkmode-icon").classList.remove("fa-moon");
         document.getElementById("darkmode-icon").classList.add("fa-sun");
       } else {
@@ -38,6 +46,24 @@ export default {
         document.getElementById("darkmode-icon").classList.add("fa-moon");
       }
     },
-  },
+
+    loadDarkModePreference() {
+      // The dark mode preference might not be set, so we need to check it
+      if (localStorage.getItem("bs.prefers-color-scheme") === null) {
+        localStorage.setItem("bs.prefers-color-scheme", "light");
+      }
+      this.store.darkModeEnabled =
+        localStorage.getItem("bs.prefers-color-scheme") === "dark";
+      this.applyDarkModePreference();
+    },
+
+    applyDarkModePreference() {
+      if (this.store.darkModeEnabled) {
+        document.documentElement.setAttribute("data-bs-theme", "dark");
+      } else {
+        document.documentElement.removeAttribute("data-bs-theme");
+      }
+    }
+  }
 };
 </script>

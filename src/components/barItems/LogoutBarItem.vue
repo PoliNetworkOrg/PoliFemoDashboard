@@ -14,7 +14,7 @@ export default {
       localStorage.removeItem("polifemo_access_token");
       localStorage.removeItem("polifemo_refresh_token");
       window.location.href = window.location.href.split("/")[0];
-    },
-  },
+    }
+  }
 };
 </script>

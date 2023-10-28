@@ -19,10 +19,6 @@ const { loggedIn } = storeToRefs(store);
   <header>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-dark-5@1.1.3/dist/css/bootstrap-nightshade.min.css"
-    />
   </header>
 
   <nav
@@ -30,7 +26,11 @@ const { loggedIn } = storeToRefs(store);
     class="navbar navbar-expand-md navbar-dark bg-dark sticky-top"
   >
     <RouterLink to="/" class="navbar-title">
-      <a class="navbar-brand ms-3">PoliFemo Dashboard</a>
+      <img
+        class="mb-1 ms-2 small-logo"
+        src="https://polinetwork.org/img/polinetwork.png"
+      />
+      <a class="navbar-brand ms-2">PoliFemo Dashboard</a>
     </RouterLink>
     <button
       class="navbar-toggler"
@@ -155,8 +155,8 @@ export default {
     hasPermission: function (permission) {
       const store = usePolifemoStore();
       return store.perms.includes(permission);
-    },
-  },
+    }
+  }
 };
 </script>
 

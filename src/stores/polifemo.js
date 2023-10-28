@@ -7,6 +7,6 @@ export const usePolifemoStore = defineStore({
     loggedIn: false,
     darkModeEnabled: false,
     perms: [],
-    authorizedauthors: [],
-  }),
+    authorizedauthors: []
+  })
 });

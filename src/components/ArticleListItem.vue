@@ -3,7 +3,7 @@ import {
   faCalendar,
   faLocationDot,
   faTrashCan,
-  faEye,
+  faEye
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import axios from "axios";
@@ -11,20 +11,28 @@ import { API_BASE_URL } from "@/plugins/AuthUtils";
 defineProps({
   id: {
     type: Number,
-    required: true,
+    required: true
   },
   targettime: {
     type: String,
-    required: false,
+    required: false
   },
   location: {
     type: Boolean,
-    required: false,
+    required: false
   },
   content: {
     type: Object,
-    required: true,
+    required: true
   },
+  buttons: {
+    type: String,
+    required: true
+  },
+  formoccurrence: {
+    type: Number,
+    required: true
+  }
 });
 
 library.add(faCalendar, faLocationDot, faTrashCan, faEye);
@@ -40,8 +48,8 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
           <i class="fas fa-location-dot" v-if="location"></i>
           {{ content.it.title || content.en.title }}
         </h5>
-        <div class="col text-truncate" v-if="content.it.subtitle || content.en.subtitle">
-          {{ content.it.subtitle || content.en.subtitle }}
+        <div class="col text-truncate" v-if="content.it.subtitle">
+          {{ content.it.subtitle }}
         </div>
         <div class="col text-truncate" v-else>Nessun sottotitolo</div>
       </div>
@@ -51,6 +59,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
             type="button"
             id="btn-preview"
             v-on:click="preview"
+            v-if="displayedButtons.includes('preview')"
             class="btn no-border btn-info rounded-start h-100 btn-list-item-action"
           >
             <i class="fas fa-eye"></i>
@@ -59,6 +68,7 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
             type="button"
             v-on:click="remove"
             id="btn-delete"
+            v-if="displayedButtons.includes('delete')"
             class="btn no-border btn-danger rounded-end h-100 btn-list-item-action"
           >
             <i class="fas fa-trash-can"></i>
@@ -66,31 +76,32 @@ library.add(faCalendar, faLocationDot, faTrashCan, faEye);
         </div>
       </div>
     </div>
-    <div :id="'preview-box-' + id" class="mt-2 border rounded d-none"></div>
+    <div :id="'preview-box-' + id + '-' + formoccurrence" class="mt-2 border rounded d-none"></div>
   </div>
 </template>
 
 <script>
-import Cherry from 'cherry-markdown/dist/cherry-markdown.core';
+import Cherry from "cherry-markdown/dist/cherry-markdown.core";
 export default {
   data() {
     return {
       cherryEditor: null,
-      previewBox: null
+      previewBox: null,
+      displayedButtons: this.buttons.split(",") || []
     };
   },
   mounted() {
-    this.previewBox = this.$el.querySelector("#preview-box-" + this.id);
+    this.previewBox = this.$el.querySelector("#preview-box-" + this.id + "-" + this.formoccurrence);
   },
   methods: {
     preview() {
-      if (this.cherryEditor && $(this.previewbox).hasClass("d-none")) {
-        $(previewbox).removeClass("d-none");
+      if (this.cherryEditor && $(this.previewBox).hasClass("d-none")) {
+        $(this.previewBox).removeClass("d-none");
       } else if (this.cherryEditor && !$(this.previewBox).hasClass("d-none")) {
         $(this.previewBox).addClass("d-none");
       } else {
         this.cherryEditor = new Cherry({
-          id: "preview-box-" + this.id, // Need this trick to avoid a bug always creating the editor in the first element of the list
+          id: "preview-box-" + this.id + "-" + this.formoccurrence, // Need this trick to avoid a bug always creating the editor in the first element of the list
           value: this.content.it.content || this.content.en.content,
           locale: "en_US",
           editor: {
@@ -114,8 +125,8 @@ export default {
             headers: {
               "Content-Type": "application/json",
               Authorization:
-                "Bearer " + localStorage.getItem("polifemo_access_token"),
-            },
+                "Bearer " + localStorage.getItem("polifemo_access_token")
+            }
           })
           .then(() => {
             this.emitter.emit("article-deleted", this.id);
@@ -136,8 +147,17 @@ export default {
         btn.classList.add("pending");
         btn.classList.remove("btn-list-item-action");
         btn.innerHTML = "Sicuro?";
+        setTimeout(() => {
+          this.stopPendingDeletion();
+        }, 5000);
       }
     },
-  },
+    stopPendingDeletion() {
+      var btn = this.$el.querySelector("#btn-delete");
+      btn.classList.remove("pending");
+      btn.classList.add("btn-list-item-action");
+      btn.innerHTML = '<i class="fas fa-trash-can"></i>';
+    }
+  }
 };
 </script>

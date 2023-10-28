@@ -21,15 +21,26 @@
       <p class="lead">
         Seleziona una delle categorie e scegli l'operazione da eseguire.
       </p>
-      <br>
-      <p class="text-secondary">ID: <a @click="copyId()" alt="Copia" class="nosub text-reset dotted-underline" href="#">{{ userid }}</a> <i id="copybtn" class="fa fa-sm fa-copy"></i></p>
+      <br />
+      <p class="text-secondary">
+        ID:
+        <a
+          @click="copyId()"
+          alt="Copia"
+          class="nosub text-reset dotted-underline"
+          href="#"
+        >
+          {{ userid }}
+        </a>
+        <i id="copybtn" class="fa fa-sm fa-copy"></i>
+      </p>
     </div>
   </div>
 </template>
 
 <style>
 @import "@/assets/styles/main.css";
-@import "@/assets/styles/bootstrap-nightshade.min.css";
+@import "@/assets/styles/bootstrap.min.css";
 </style>
 
 <script>
@@ -40,8 +51,8 @@ import { faCopy, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 export default {
   components: {
-    LoginButton,
-  }, 
+    LoginButton
+  },
   setup() {
     const store = usePolifemoStore();
     const { loggedIn, perms, userid } = storeToRefs(store);
@@ -49,7 +60,7 @@ export default {
     return {
       loggedIn,
       perms,
-      userid,
+      userid
     };
   },
   methods: {
@@ -66,5 +77,5 @@ export default {
       navigator.clipboard.writeText(this.userid);
     }
   }
-}
+};
 </script>

@@ -18,8 +18,8 @@ function bootApp() {
        * You can pass default config to vue app like router , ... (optional)
        */
       configs: {
-        router,
-      },
+        router
+      }
     })
     .use(createPinia());
 
