@@ -41,7 +41,7 @@ defineProps({
     </div>
     <div class="mb-2">
       <ArticleListItem
-        v-for="item in this.articles"
+        v-for="item in articles"
         :key="item.id"
         v-bind:content="item.content"
         v-bind:targettime="item.target_time"
@@ -50,7 +50,7 @@ defineProps({
         :buttons="buttons"
         :formoccurrence="occurrence"
       ></ArticleListItem>
-      <div v-if="this.articles.length != 0 && canLoadMore" class="mt-4 row">
+      <div v-if="articles.length != 0 && canLoadMore" class="mt-4 row">
         <div class="text-primary mx-auto col-auto" role="status">
           <a
             id="loadMore"
