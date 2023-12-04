@@ -3,7 +3,7 @@ name: Fix Peer Dependencies
 on:
   push:
     branches:
-      - main
+      - '*'
 
 jobs:
   fix-peer-dependencies:
