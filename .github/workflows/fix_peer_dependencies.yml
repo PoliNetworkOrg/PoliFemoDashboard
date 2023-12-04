@@ -35,7 +35,6 @@ jobs:
           git commit -m "Fix conflicting peer dependencies" || true
           git pull || true
 
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
