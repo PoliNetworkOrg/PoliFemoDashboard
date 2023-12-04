@@ -1,0 +1,45 @@
+name: Fix Peer Dependencies
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  fix-peer-dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fix peer dependencies
+        run: npm update
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Fix conflicting peer dependencies"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+          branch: fix-peer-dependencies
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: fix-peer-dependencies
+          commit-message: "Fix conflicting peer dependencies"
+          title: "Fix conflicting peer dependencies"
+          body: "This pull request fixes conflicting peer dependencies."
