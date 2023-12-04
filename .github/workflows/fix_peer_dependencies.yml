@@ -33,6 +33,7 @@ jobs:
         run: |
           git add .
           git commit -m "Fix conflicting peer dependencies" || true
+          git pull || true
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.8.0
