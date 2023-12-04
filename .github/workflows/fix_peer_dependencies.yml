@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 20
 
       - name: Install dependencies
         run: npm install
@@ -43,3 +43,4 @@ jobs:
           commit-message: "Fix conflicting peer dependencies"
           title: "Fix conflicting peer dependencies"
           body: "This pull request fixes conflicting peer dependencies."
+          branch-suffix: timestamp
