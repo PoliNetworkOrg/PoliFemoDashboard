@@ -24,22 +24,20 @@ jobs:
       - name: Fix peer dependencies
         run: npm update
 
-      - name: Commit changes
+      - name: Git setup
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          
+      - name: Commit changes
+        run: |
           git add .
-          git commit -m "Fix conflicting peer dependencies"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.8.0
-        with:
-          branch: fix-peer-dependencies
+          git commit -m "Fix conflicting peer dependencies" || true
+          git pull || true
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: fix-peer-dependencies
           commit-message: "Fix conflicting peer dependencies"
           title: "Fix conflicting peer dependencies"
           body: "This pull request fixes conflicting peer dependencies."
