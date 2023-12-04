@@ -42,7 +42,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: fix-peer-dependencies
           commit-message: "Fix conflicting peer dependencies"
           title: "Fix conflicting peer dependencies"
           body: "This pull request fixes conflicting peer dependencies."
