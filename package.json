@@ -14,7 +14,7 @@
     "@vitejs/plugin-vue": "^5.0.0",
     "axios": "^1.6.2",
     "axios-auth-refresh": "^3.3.6",
-    "cherry-markdown": "^0.8.33",
+    "cherry-markdown": "^0.8.34",
     "leaflet": "^1.9.4",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
