@@ -14,5 +14,7 @@ updates:
     commit-message:
       prefix: "fix"
       include: "scope"
-    grouping:
-      update-types: ["all"]
+    groups:
+      combined-dependencies:
+        patterns:
+          - "*"
