@@ -12,7 +12,7 @@ updates:
     labels:
       - "dependencies"
     commit-message:
-      prefix: "fix"
+      prefix: "chore"
       include: "scope"
     groups:
       combined-dependencies:
