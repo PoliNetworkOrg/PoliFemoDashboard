@@ -14,13 +14,13 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "axios": "^1.6.7",
     "axios-auth-refresh": "^3.3.6",
-    "cherry-markdown": "^0.8.38",
+    "cherry-markdown": "^0.8.39",
     "leaflet": "^1.9.4",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
-    "vite": "^5.1.1",
-    "vue": "^3.4.18",
-    "vue-router": "^4.2.5"
+    "vite": "^5.1.4",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
