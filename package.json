@@ -8,7 +8,7 @@
     "format": "npx prettier --write ."
   },
   "dependencies": {
-    "@eonasdan/tempus-dominus": "^6.9.5",
+    "@eonasdan/tempus-dominus": "^6.9.6",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@vitejs/plugin-vue": "^5.0.4",
@@ -18,7 +18,7 @@
     "leaflet": "^1.9.4",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
-    "vite": "^5.1.1",
+    "vite": "^5.2.7",
     "vue": "^3.4.18",
     "vue-router": "^4.2.5"
   },
