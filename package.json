@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@eonasdan/tempus-dominus": "^6.9.6",
-    "@fortawesome/fontawesome-svg-core": "^6.5.1",
-    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@vitejs/plugin-vue": "^5.0.4",
     "axios": "^1.6.7",
     "axios-auth-refresh": "^3.3.6",
@@ -18,9 +18,9 @@
     "leaflet": "^1.9.4",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
-    "vite": "^5.2.7",
-    "vue": "^3.4.18",
-    "vue-router": "^4.2.5"
+    "vite": "^5.2.10",
+    "vue": "^3.4.26",
+    "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
